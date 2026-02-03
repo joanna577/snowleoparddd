@@ -139,7 +139,10 @@
 
         /* 輸入框美化 */
         .site-input {
-            width: 100%;
+            display: block;
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
             padding: 12px 16px;
             background-color: #ffffff;
             border: 2px solid #e2e8f0;
@@ -147,7 +150,9 @@
             transition: all 0.3s;
             color: var(--text-main);
             font-size: 16px;
-            box-sizing: border-box !important; 
+            box-sizing: border-box !important;
+            -webkit-appearance: none;
+            appearance: none;
         }
         .site-input:focus {
             outline: none;
@@ -156,6 +161,18 @@
             box-shadow: 0 0 0 4px rgba(255, 95, 171, 0.15);
             position: relative; 
             z-index: 5; 
+        }
+
+        /* 錯誤狀態的輸入框 */
+        .input-error {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         /* 訂單卡片 */
@@ -332,13 +349,14 @@
         /* 翻牌卡片容器 */
         .flip-card {
             background-color: transparent;
-            width: 80px; height: 80px;
+            width: 75px; height: 75px; 
             perspective: 1000px; 
             cursor: pointer;
             margin: 0 auto;
             position: relative; 
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            flex-shrink: 0; 
         }
         
         /* 卡片內部 - 設定 3D 轉場 */
@@ -468,7 +486,7 @@
         }
 
         @media (min-width: 768px) {
-            .flip-card { width: 100px; height: 100px; }
+            .flip-card { width: 110px; height: 110px; }
         }
     </style>
 </head>
@@ -479,6 +497,7 @@
         <div class="spinner"></div>
         <h3 class="text-xl font-bold text-[#0c4a6e] mb-2">正在將您的美照送往雲端...</h3>
         <p class="text-sm text-gray-500">照片解析度較高，請耐心等候 ❤️</p>
+        <p class="text-xs text-gray-400 mt-2">若照片較多，可能需要一分鐘，請勿關閉視窗</p>
     </div>
 
     <!-- 導覽列 -->
@@ -509,7 +528,6 @@
         <div class="max-w-2xl mx-auto py-4">
             <h1 class="text-4xl md:text-5xl font-bold text-[#0c4a6e] mb-2 leading-tight flex items-center justify-center gap-2 flex-wrap">
                 手繪
-                <!-- ★★★ 修改：使用 Lucide Icon 替代，確保全平台顏色一致 ★★★ -->
                 <i data-lucide="heart" class="w-10 h-10 md:w-12 md:h-12 fill-[#ff5fab] text-[#ff5fab]"></i>
                 祝福似顏繪
             </h1>
@@ -526,12 +544,9 @@
             <button class="modal-close" onclick="closeGallery()">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            <h3 class="text-2xl font-bold text-[#0c4a6e] mb-6 text-center border-b border-[#e2e8f0] pb-4">人物似顏繪相簿</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <img src="p1.png" onerror="this.src='https://placehold.co/800x800/f0f9ff/ff5fab?text=Portrait+1'" class="w-full h-auto rounded-lg object-cover">
-                <img src="p2.png" onerror="this.src='https://placehold.co/800x800/f0f9ff/ff5fab?text=Portrait+2'" class="w-full h-auto rounded-lg object-cover">
-                <img src="p3.png" onerror="this.src='https://placehold.co/800x800/f0f9ff/ff5fab?text=Portrait+3'" class="w-full h-auto rounded-lg object-cover">
-                <img src="p4.png" onerror="this.src='https://placehold.co/800x800/f0f9ff/ff5fab?text=Portrait+4'" class="w-full h-auto rounded-lg object-cover">
+            <h3 id="gallery-title" class="text-2xl font-bold text-[#0c4a6e] mb-6 text-center border-b border-[#e2e8f0] pb-4">相簿</h3>
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Javascript will populate this -->
             </div>
         </div>
     </div>
@@ -545,7 +560,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- 相簿 1 -->
-                <div class="work-card group">
+                <div class="work-card group" onclick="openGallery('blessing')">
                     <img src="https://placehold.co/600x800/f0f9ff/ff5fab?text=Blessing+Portrait" alt="祝福似顏繪" class="work-img">
                     <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">
                         祝福似顏繪
@@ -553,7 +568,7 @@
                 </div>
 
                 <!-- 相簿 2 -->
-                <div class="work-card group" onclick="openGallery()">
+                <div class="work-card group" onclick="openGallery('portrait')">
                     <div class="relative">
                         <img src="p1.png" onerror="this.src='https://placehold.co/600x800/f0f9ff/ff5fab?text=Click+to+View'" alt="人物似顏繪" class="work-img">
                     </div>
@@ -563,7 +578,7 @@
                 </div>
 
                 <!-- 相簿 3 -->
-                <div class="work-card group">
+                <div class="work-card group" onclick="openGallery('pet')">
                     <img src="https://placehold.co/600x800/f0f9ff/ff5fab?text=Pet+Portrait" alt="寵物似顏繪" class="work-img">
                     <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">
                         寵物似顏繪
@@ -572,7 +587,6 @@
             </div>
 
             <div class="mt-12 text-center">
-                <!-- ★★★ 修改：加上 active 樣式 (點擊變色) ★★★ -->
                 <button onclick="switchPage('commission'); window.scrollTo(0,0);" class="bg-white border-2 border-[#ff5fab] text-[#ff5fab] px-8 py-3 rounded-full font-bold hover:bg-[#ff5fab] hover:text-white active:bg-[#ff5fab] active:text-white transition shadow-lg transform hover:scale-105 active:scale-95 select-none flex items-center justify-center gap-2 mx-auto">
                     來張似顏繪吧 <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
                 </button>
@@ -599,71 +613,6 @@
 
                 <div onclick="addOrder()" class="w-full py-4 border-2 border-dashed border-[#ff5fab] rounded-xl text-[#ff5fab] font-bold text-center cursor-pointer hover:bg-[#fff0f7] transition flex items-center justify-center gap-2 active:scale-95 select-none">
                     <i data-lucide="plus-circle" class="w-5 h-5 text-[#ff5fab]"></i> 新增一張委託圖
-                </div>
-            </div>
-
-            <!-- 2. 客製化選項 (包含貼紙) -->
-            <div class="mb-14">
-                <h3 class="form-section-title">
-                    <i data-lucide="sparkles" class="text-[#ff5fab]"></i> 客製化選項
-                </h3>
-                
-                <div class="mb-6">
-                    <label class="block font-bold text-[#0c4a6e] mb-3">免費代貼祝福小貼紙 <span class="required-star">*</span></label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="radio-box">
-                            <!-- 當選擇不貼時，隱藏選擇區 -->
-                            <input type="radio" name="sticker" value="不用貼紙" class="hidden" required onchange="toggleStickerSection(false)">
-                            <div class="radio-inner">
-                                不用貼紙
-                            </div>
-                        </label>
-                        <label class="radio-box">
-                            <!-- 當選擇好呀時，展開選擇區 -->
-                            <input type="radio" name="sticker" value="好呀" class="hidden" onchange="toggleStickerSection(true)">
-                            <div class="radio-inner">
-                                好呀~
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- ★★★ 貼紙選擇互動區 (預設隱藏) ★★★ -->
-                <div id="sticker-interactive-area" class="hidden mt-8 border-t-2 border-dashed border-[#e2e8f0] pt-6">
-                    <h4 class="font-bold text-[#0c4a6e] mb-2 flex items-center gap-2">
-                        <i data-lucide="smile" class="w-5 h-5 text-[#ff5fab]"></i> 請直覺選一張最喜歡的圖
-                    </h4>
-                    <p class="text-xs text-red-500 font-bold mb-4">※ 請憑直覺選擇一張，選定後不可替換喔！</p>
-
-                    <!-- 21 張貼紙網格 -->
-                    <div id="sticker-grid" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-8">
-                        <!-- JS 會自動生成內容 -->
-                    </div>
-
-                    <!-- 翻牌與祝福語顯示區 (預設隱藏，選中貼紙後顯示) -->
-                    <div id="reveal-section" class="hidden bg-[#fff0f7] p-4 md:p-6 rounded-xl text-center transition-all duration-500 mt-6">
-                        
-                        <!-- 1. 提示文字 -->
-                        <p class="text-[#0c4a6e] font-bold mb-6 text-base md:text-lg">請點擊下方的愛心，接收您的祝福 ✨</p>
-                        
-                        <!-- 2. 卡片區 -->
-                        <div id="cards-container" class="flex justify-center gap-3 md:gap-8 mb-6 relative">
-                            <!-- 卡片會由 JavaScript 自動生成插入這裡 -->
-                        </div>
-
-                        <!-- 3. 「您的專屬祝福」標題 (移到下方) -->
-                        <div class="flex items-center justify-center gap-2 mb-2 mt-4 opacity-0 transition-opacity duration-500" id="blessing-title-wrapper">
-                            <i data-lucide="heart" class="w-5 h-5 md:w-6 md:h-6 fill-[#ff5fab] text-[#ff5fab]"></i>
-                            <p class="text-[#ff5fab] font-bold text-lg md:text-xl">您的專屬祝福</p>
-                            <i data-lucide="heart" class="w-5 h-5 md:w-6 md:h-6 fill-[#ff5fab] text-[#ff5fab]"></i>
-                        </div>
-
-                        <!-- 4. 祝福語文字 -->
-                        <div id="blessing-text-container" class="opacity-0 transition-opacity duration-1000 px-2 overflow-hidden">
-                            <!-- ★★★ 修改：whitespace-nowrap 強制不換行，text-base md:text-2xl 讓手機版字體自適應縮小避免溢出 -->
-                            <p id="blessing-words" class="text-[#0c4a6e] font-bold text-base md:text-2xl whitespace-nowrap overflow-visible"></p>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -775,32 +724,69 @@
     <script>
         lucide.createIcons();
         let orderCount = 0;
-        
-        // ★★★ 設定好的 Google Apps Script 網址 ★★★
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLZOs5AYZT2lg0z3EQSAFRLOUAnhCce4II9gohz41wxaN7J-wbNPvDNEkz0rgtLbCTcw/exec";
+        const pinkHeartSvg = `<i data-lucide="heart" class="w-10 h-10 fill-[#ff5fab] text-[#ff5fab] inline-block"></i>`;
 
-        // ★★★ 修改：將愛心 Emoji 替換為 SVG 字符串，確保手機上也是桃粉色 ★★★
-        const pinkHeartSvg = `<i data-lucide="heart" class="w-8 h-8 fill-[#ff5fab] text-[#ff5fab] inline-block align-middle mb-1"></i>`;
+        // ★★★ 設定相簿圖片 ★★★
+        const portfolioImages = {
+            blessing: {
+                title: "祝福似顏繪相簿",
+                images: [
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+1",
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+2",
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+3",
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+4"
+                ]
+            },
+            portrait: {
+                title: "人像似顏繪相簿",
+                images: ["p1.png", "p2.png", "p3.png", "p4.png"]
+            },
+            pet: {
+                title: "寵物似顏繪相簿",
+                images: [
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+1",
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+2",
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+3",
+                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+4"
+                ]
+            }
+        };
+
+        function openGallery(type) {
+            const data = portfolioImages[type];
+            if (!data) return;
+
+            document.getElementById('gallery-title').innerText = data.title;
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = ''; 
+
+            data.images.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.onerror = function() { this.src = `https://placehold.co/800x800/f0f9ff/ff5fab?text=${encodeURIComponent(data.title)}`; };
+                img.className = "w-full h-auto rounded-lg object-cover";
+                grid.appendChild(img);
+            });
+            document.getElementById('gallery-modal').classList.add('open');
+        }
 
         // --- 21組貼紙模擬資料 ---
         const stickersData = [];
         const blessings = [
             { icon: "💰", text: "財源滾滾" }, 
-            { icon: pinkHeartSvg, text: "愛情順利" }, // 這裡改成 SVG
+            { icon: pinkHeartSvg, text: "愛情順利" }, 
             { icon: "🌸", text: "心花怒放" },
             { icon: "✨", text: "閃閃發光" }, { icon: "🍀", text: "幸運相隨" }, { icon: "💪", text: "身體健康" },
             { icon: "🌈", text: "未來可期" }, { icon: "🍎", text: "平平安安" }, { icon: "🎉", text: "天天開心" },
             { icon: "☀️", text: "充滿希望" }, { icon: "🐱", text: "貓肥家潤" }, { icon: "🐶", text: "忠誠陪伴" }
         ];
 
-        // 產生 21 個貼紙資料
         for(let i=1; i<=21; i++) {
-            // 隨機分配3個祝福
             let elements = [];
             for(let j=0; j<3; j++) {
                 elements.push(blessings[Math.floor(Math.random() * blessings.length)]);
             }
-            
             stickersData.push({
                 id: i,
                 imageUrl: `https://placehold.co/200x200/fff0f7/ff5fab?text=Sticker+${i}`,
@@ -809,87 +795,91 @@
             });
         }
 
-        let selectedSticker = null;
-        let flippedCount = 0;
+        const orderStates = {};
 
         document.addEventListener('DOMContentLoaded', () => { 
             addOrder(); 
             switchPage('works');
-            renderStickers();
             
             document.getElementById('gallery-modal').addEventListener('click', function(e) {
                 if(e.target === this) closeGallery();
             });
         });
 
-        // --- 貼紙與翻牌邏輯 ---
+        // --- 核心邏輯修改：將所有功能綁定到特定 orderId ---
 
-        function toggleStickerSection(show) {
-            const area = document.getElementById('sticker-interactive-area');
+        function toggleStickerSection(show, orderId) {
+            const area = document.getElementById(`sticker-interactive-area-${orderId}`);
             if (show) {
                 area.classList.remove('hidden');
+                renderStickers(orderId);
                 setTimeout(() => area.scrollIntoView({behavior: "smooth", block: "start"}), 100);
             } else {
                 area.classList.add('hidden');
-                selectedSticker = null;
-                resetFlipCards();
-                document.querySelectorAll('.sticker-grid-item').forEach(el => el.classList.remove('selected'));
-                document.getElementById('reveal-section').classList.add('hidden');
+                if (orderStates[orderId]) {
+                    orderStates[orderId].selectedSticker = null;
+                    orderStates[orderId].flippedCount = 0;
+                }
+                document.getElementById(`reveal-section-${orderId}`).classList.add('hidden');
+                document.getElementById(`blessing-text-container-${orderId}`).classList.add('opacity-0');
             }
         }
 
-        function renderStickers() {
-            const grid = document.getElementById('sticker-grid');
+        function renderStickers(orderId) {
+            const grid = document.getElementById(`sticker-grid-${orderId}`);
+            if(grid.children.length > 0) return;
+
             grid.innerHTML = '';
             stickersData.forEach(sticker => {
                 const div = document.createElement('div');
                 div.className = 'sticker-grid-item';
-                div.id = `sticker-item-${sticker.id}`;
+                div.id = `sticker-item-${orderId}-${sticker.id}`;
                 div.innerHTML = `
                     <img src="${sticker.imageUrl}" alt="貼紙選項" class="w-full h-auto object-cover aspect-square pointer-events-none">
                 `;
-                div.onclick = () => selectSticker(sticker.id);
+                div.onclick = () => selectSticker(sticker.id, orderId);
                 grid.appendChild(div);
             });
         }
 
-        function selectSticker(id) {
-            if (selectedSticker && selectedSticker.id === id) return;
-            if (flippedCount > 0) {
+        function selectSticker(stickerId, orderId) {
+            const state = orderStates[orderId];
+            if (state.selectedSticker && state.selectedSticker.id === stickerId) return;
+            if (state.flippedCount > 0) {
                  alert("選定後不可更換喔！請直接翻開愛心接收祝福 ❤");
                  return;
             }
 
-            document.querySelectorAll('.sticker-grid-item').forEach(el => el.classList.remove('selected'));
-            document.getElementById(`sticker-item-${id}`).classList.add('selected');
+            const grid = document.getElementById(`sticker-grid-${orderId}`);
+            grid.querySelectorAll('.sticker-grid-item').forEach(el => el.classList.remove('selected'));
+            document.getElementById(`sticker-item-${orderId}-${stickerId}`).classList.add('selected');
 
-            selectedSticker = stickersData.find(s => s.id === id);
+            state.selectedSticker = stickersData.find(s => s.id === stickerId);
             
-            document.getElementById('reveal-section').classList.remove('hidden');
-            document.getElementById('reveal-section').scrollIntoView({behavior: "smooth", block: "center"});
+            const revealSec = document.getElementById(`reveal-section-${orderId}`);
+            revealSec.classList.remove('hidden');
+            revealSec.scrollIntoView({behavior: "smooth", block: "center"});
             
-            const container = document.getElementById('cards-container');
+            const container = document.getElementById(`cards-container-${orderId}`);
             container.innerHTML = '';
-            flippedCount = 0;
-            document.getElementById('blessing-text-container').classList.add('opacity-0');
-            // 初始化隱藏標題
-            document.getElementById('blessing-title-wrapper').classList.add('opacity-0');
+            state.flippedCount = 0;
+            document.getElementById(`blessing-text-container-${orderId}`).classList.add('opacity-0');
+            document.getElementById(`blessing-title-wrapper-${orderId}`).classList.add('opacity-0');
 
             for(let i=0; i<3; i++) {
-                const el = selectedSticker.elements[i];
+                const el = state.selectedSticker.elements[i];
                 const cardIndex = i + 1;
                 
-                // 動態產生卡片
-                // 注意：這裡加入了 event 物件傳遞，用於碎紙花定位
+                // ★★★ 卡片結構修改：使用 justify-end 和 pb-3 對齊底部 ★★★
                 const cardHTML = `
-                    <div class="flip-card" id="flip-card-${cardIndex}" onclick="flipCard(event, ${cardIndex})">
-                        <div class="flip-card-inner" id="card-inner-${cardIndex}">
+                    <div class="flip-card" id="flip-card-${orderId}-${cardIndex}" onclick="flipCard(event, ${cardIndex}, ${orderId})">
+                        <div class="flip-card-inner" id="card-inner-${orderId}-${cardIndex}">
                             <div class="flip-card-front">
-                                <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 fill-current text-[#ff5fab]"></i>
+                                <i data-lucide="heart" class="w-7 h-7 md:w-10 md:h-10 fill-current text-[#ff5fab]"></i>
                             </div>
-                            <div class="flip-card-back flex flex-col items-center justify-center">
-                                <span class="text-3xl md:text-4xl mb-1">${el.icon}</span>
-                                <span class="text-[10px] md:text-xs font-bold text-[#0c4a6e] leading-tight px-1">${el.text}</span>
+                            <div class="flip-card-back flex flex-col items-center justify-end pb-3 gap-0">
+                                <span class="text-3xl md:text-5xl drop-shadow-sm flex items-center justify-center h-10 md:h-14">${el.icon}</span>
+                                <span class="text-[10px] md:text-sm font-bold text-[#0c4a6e] tracking-wide leading-none mt-1">${el.text}</span>
                             </div>
                         </div>
                     </div>
@@ -899,118 +889,80 @@
             lucide.createIcons();
         }
 
-        function flipCard(event, cardIndex) {
-            const inner = document.getElementById(`card-inner-${cardIndex}`);
-            const cardEl = document.getElementById(`flip-card-${cardIndex}`);
+        function flipCard(event, cardIndex, orderId) {
+            const inner = document.getElementById(`card-inner-${orderId}-${cardIndex}`);
+            const cardEl = document.getElementById(`flip-card-${orderId}-${cardIndex}`);
+            const state = orderStates[orderId];
             
             if(inner.parentElement.classList.contains('flipped')) return;
 
-            // 1. 執行翻牌 (旋轉)
             inner.parentElement.classList.add('flipped');
-            flippedCount++;
+            state.flippedCount++;
 
-            // ★★★ 修改重點：等待 800ms (翻牌動畫結束) 後，才執行彈跳與碎紙花 ★★★
             setTimeout(() => {
-                // 2. 加入落地後的彈跳特效
                 cardEl.classList.remove('flip-card-landed');
-                void cardEl.offsetWidth; // Trigger Reflow
+                void cardEl.offsetWidth; 
                 cardEl.classList.add('flip-card-landed');
-
-                // 3. 觸發碎紙花特效 (Confetti) - 延遲到與彈跳同步
                 createConfetti(cardEl);
 
-                // 4. 全部翻開後，顯示祝福語
-                if (flippedCount === 3) {
+                if (state.flippedCount === 3) {
                     setTimeout(() => {
-                        const words = selectedSticker.elements.map(e => e.text).join('、');
-                        const textContainer = document.getElementById('blessing-text-container');
-                        const titleWrapper = document.getElementById('blessing-title-wrapper');
+                        const words = state.selectedSticker.elements.map(e => e.text).join('、');
+                        const textContainer = document.getElementById(`blessing-text-container-${orderId}`);
+                        const titleWrapper = document.getElementById(`blessing-title-wrapper-${orderId}`);
                         
-                        // ★★★ 更新內容並顯示 ★★★
-                        document.getElementById('blessing-words').innerText = `${words}`;
+                        document.getElementById(`blessing-words-${orderId}`).innerText = `${words}`;
                         textContainer.classList.remove('opacity-0');
-                        titleWrapper.classList.remove('opacity-0'); // 顯示標題
-                        
-                        // 確保 Lucide Icons 在新插入的內容中渲染 (如果有的話)
+                        titleWrapper.classList.remove('opacity-0');
                         lucide.createIcons();
                     }, 600);
                 }
-            }, 800); // 800ms 對應 css animation duration
+            }, 800);
         }
 
-        // --- 碎紙花特效函式 ---
         function createConfetti(element) {
             const rect = element.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            
-            const colors = ['#ff5fab', '#bae6fd', '#fbcfe8', '#38bdf8', '#fbbf24']; // 粉紅、藍、黃
-            const particleCount = 30; // 粒子數量
+            const colors = ['#ff5fab', '#bae6fd', '#fbcfe8', '#38bdf8', '#fbbf24'];
+            const particleCount = 30;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('confetti-particle');
-                
-                // 隨機顏色
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // 初始位置 (卡片中心)
                 particle.style.left = `${centerX}px`;
                 particle.style.top = `${centerY}px`;
-
                 document.body.appendChild(particle);
 
-                // 隨機角度與距離
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = 30 + Math.random() * 80; // 擴散距離
+                const velocity = 30 + Math.random() * 80;
                 const tx = Math.cos(angle) * velocity;
                 const ty = Math.sin(angle) * velocity;
 
-                // 使用 Web Animations API 製作動畫
                 const animation = particle.animate([
                     { transform: 'translate(0, 0) scale(1)', opacity: 1 },
                     { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
                 ], {
-                    duration: 600 + Math.random() * 400, // 0.6s - 1.0s
+                    duration: 600 + Math.random() * 400,
                     easing: 'cubic-bezier(0, .9, .57, 1)',
                     fill: 'forwards'
                 });
-
-                // 動畫結束後移除元素
-                animation.onfinish = () => {
-                    particle.remove();
-                };
+                animation.onfinish = () => particle.remove();
             }
         }
 
-        function resetFlipCards() {
-            flippedCount = 0;
-            document.getElementById('blessing-text-container').classList.add('opacity-0');
-            document.getElementById('blessing-title-wrapper').classList.add('opacity-0');
-        }
-
-
-        // --- 原有功能 ---
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-        function openGallery() {
-            document.getElementById('gallery-modal').classList.add('open');
-        }
-        function closeGallery() {
-            document.getElementById('gallery-modal').classList.remove('open');
-        }
+        // --- 頁面邏輯 ---
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+        function closeGallery() { document.getElementById('gallery-modal').classList.remove('open'); }
         function switchPage(pageId) {
             document.getElementById('page-works').classList.remove('active');
             document.getElementById('page-commission').classList.remove('active');
             document.getElementById('price-bar').classList.remove('show');
             document.getElementById('price-bar').classList.add('hidden');
-
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('nav-mobile-works').classList.remove('text-[#ff5fab]', 'font-bold');
             document.getElementById('nav-mobile-commission').classList.remove('text-[#ff5fab]', 'font-bold');
-
             document.getElementById('page-' + pageId).classList.add('active');
 
             if(pageId === 'works') {
@@ -1027,10 +979,13 @@
 
         function addOrder() {
             orderCount++;
+            orderStates[orderCount] = { selectedSticker: null, flippedCount: 0 };
+
             const container = document.getElementById('orders-container');
             const div = document.createElement('div');
             div.className = 'order-card order-card-active'; 
             div.id = `order-${orderCount}`;
+            
             div.innerHTML = `
                 <div class="flex justify-between items-center mb-4 pb-2 border-b border-dashed border-[#ff5fab]">
                     <span class="font-bold text-[#0c4a6e] text-lg">委託圖 #${orderCount}</span>
@@ -1056,7 +1011,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-3">
+                <div class="space-y-3 mb-6">
                     <div class="relative">
                         <input type="file" id="file-${orderCount}" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="updateFileName(this, ${orderCount})">
                         <div class="w-full py-4 border-2 border-dashed border-[#cbd5e1] rounded-xl text-[#64748b] text-sm text-center hover:border-[#ff5fab] hover:text-[#ff5fab] hover:bg-[#f0f9ff] transition flex flex-col items-center justify-center gap-1" id="upload-label-${orderCount}">
@@ -1065,18 +1020,68 @@
                             <span class="text-xs text-[#94a3b8] font-normal">支援多張上傳 (4K不壓縮)</span>
                         </div>
                     </div>
-                    
                     <input type="text" id="combo-${orderCount}" class="site-input text-sm" placeholder="組合備註：例如 1人抱著1貓">
+                </div>
+
+                <div class="pt-4 border-t border-[#e2e8f0]">
+                    <label class="block font-bold text-[#0c4a6e] mb-3 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-[#ff5fab]"></i> 是否需要貼紙與祝福？
+                    </label>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <label class="radio-box">
+                            <!-- ★★★ 修改：不預選任何項目 ★★★ -->
+                            <input type="radio" name="sticker-${orderCount}" value="不用貼紙" class="hidden" onchange="toggleStickerSection(false, ${orderCount})">
+                            <div class="radio-inner">不用貼紙</div>
+                        </label>
+                        <label class="radio-box">
+                            <input type="radio" name="sticker-${orderCount}" value="好呀" class="hidden" onchange="toggleStickerSection(true, ${orderCount})">
+                            <div class="radio-inner">好呀~</div>
+                        </label>
+                    </div>
+
+                    <div id="sticker-interactive-area-${orderCount}" class="hidden mt-4 border-t-2 border-dashed border-[#e2e8f0] pt-4">
+                        <h4 class="font-bold text-[#0c4a6e] mb-2 flex items-center gap-2 text-sm">
+                            <i data-lucide="smile" class="w-4 h-4 text-[#ff5fab]"></i> 請直覺選一張最喜歡的圖
+                        </h4>
+                        
+                        <div id="sticker-grid-${orderCount}" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-6"></div>
+
+                        <div id="reveal-section-${orderCount}" class="hidden bg-[#fff0f7] p-4 rounded-xl text-center transition-all duration-500 mt-4">
+                            <p class="text-[#0c4a6e] font-bold mb-4 text-sm md:text-base">請點擊下方的愛心，接收您的祝福 ✨</p>
+                            <div id="cards-container-${orderCount}" class="flex justify-center gap-3 md:gap-8 mb-4 relative"></div>
+                            
+                            <div class="flex items-center justify-center gap-2 mb-2 mt-4 opacity-0 transition-opacity duration-500" id="blessing-title-wrapper-${orderCount}">
+                                <i data-lucide="heart" class="w-5 h-5 fill-[#ff5fab] text-[#ff5fab]"></i>
+                                <p class="text-[#ff5fab] font-bold text-lg">您的專屬祝福</p>
+                                <i data-lucide="heart" class="w-5 h-5 fill-[#ff5fab] text-[#ff5fab]"></i>
+                            </div>
+                            <div id="blessing-text-container-${orderCount}" class="opacity-0 transition-opacity duration-1000 px-2 overflow-hidden">
+                                <p id="blessing-words-${orderCount}" class="text-[#0c4a6e] font-bold text-base md:text-xl whitespace-nowrap overflow-visible"></p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border-2 border-[#e2e8f0] w-full overflow-hidden">
+                            <div class="min-w-0">
+                                <label class="block text-sm font-bold text-[#0c4a6e] mb-2">被畫對象姓名 <span class="required-star">*</span></label>
+                                <input type="text" id="subject_name-${orderCount}" class="site-input" placeholder="例如：王小明">
+                            </div>
+                            <div class="min-w-0">
+                                <label class="block text-sm font-bold text-[#0c4a6e] mb-2" id="subject_birthday_label-${orderCount}">被畫對象生日 <span class="text-xs text-gray-400 font-normal">(不知生日可不填)</span></label>
+                                <input type="date" id="subject_birthday-${orderCount}" class="site-input cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
             container.appendChild(div);
             lucide.createIcons();
             calculateTotal();
+            updateBirthdayRequirement(orderCount); // 初始化生日檢查
         }
 
         function removeOrder(id) {
             const el = document.getElementById(`order-${id}`);
-            if (el) { el.remove(); calculateTotal(); }
+            if (el) { el.remove(); calculateTotal(); delete orderStates[id]; }
         }
 
         function updateQty(type, id, change) {
@@ -1086,6 +1091,21 @@
             if (val < 0) val = 0;
             input.value = val;
             calculateTotal();
+            updateBirthdayRequirement(id);
+        }
+
+        function updateBirthdayRequirement(id) {
+            const peopleQty = parseInt(document.getElementById(`qty-people-${id}`).value) || 0;
+            const label = document.getElementById(`subject_birthday_label-${id}`);
+            if (!label) return;
+
+            if (peopleQty > 0) {
+                // 有人物：必填，紅色星號
+                label.innerHTML = `被畫對象生日 <span class="required-star">*</span>`;
+            } else {
+                // 只有寵物 (或都是0)：不必填，灰色提示
+                label.innerHTML = `被畫對象生日 <span class="text-xs text-gray-400 font-normal">(不知生日可不填)</span>`;
+            }
         }
 
         function updateFileName(input, id) {
@@ -1123,29 +1143,66 @@
             const errorMsg = document.getElementById('shipping-error');
 
             let hasContent = false;
-            document.querySelectorAll('.order-card').forEach(card => {
-                const p = parseInt(card.querySelector('input[id^="qty-people"]').value);
-                const a = parseInt(card.querySelector('input[id^="qty-pet"]').value);
-                if (p > 0 || a > 0) hasContent = true;
-            });
+            let isValid = true;
 
-            if (!hasContent) {
-                alert("請至少設定一張圖的人數或寵物數量！");
-                return false;
+            const cards = document.querySelectorAll('.order-card');
+            for(let i=0; i<cards.length; i++) {
+                const card = cards[i];
+                const orderId = card.id.split('-')[1]; 
+                
+                const p = parseInt(document.getElementById(`qty-people-${orderId}`).value) || 0;
+                const a = parseInt(document.getElementById(`qty-pet-${orderId}`).value) || 0;
+                
+                if (p === 0 && a === 0) {
+                    alert(`【委託圖 #${orderId}】請設定人數或寵物數量！`);
+                    card.scrollIntoView({behavior: "smooth", block: "center"});
+                    card.style.borderColor = "#ef4444";
+                    setTimeout(() => card.style.borderColor = "#ff5fab", 2000);
+                    isValid = false; break;
+                }
+                
+                hasContent = true;
+
+                const stickerChoice = document.querySelector(`input[name="sticker-${orderId}"]:checked`);
+                // ★★★ 驗證：必須選擇要或不要貼紙 ★★★
+                if (!stickerChoice) {
+                    alert(`【委託圖 #${orderId}】請選擇是否需要貼紙！`);
+                    card.querySelector('.radio-box').scrollIntoView({behavior: "smooth", block: "center"});
+                    isValid = false; break;
+                }
+
+                if(stickerChoice && stickerChoice.value === "好呀") {
+                    if (!orderStates[orderId].selectedSticker) {
+                        alert(`【委託圖 #${orderId}】您選擇了要貼紙，請選一張圖喔！`);
+                        document.getElementById(`sticker-interactive-area-${orderId}`).scrollIntoView({behavior: "smooth"});
+                        isValid = false; break;
+                    }
+                    const subjName = document.getElementById(`subject_name-${orderId}`);
+                    if (!subjName.value) {
+                        alert(`【委託圖 #${orderId}】請填寫被畫對象姓名！`);
+                        subjName.classList.add('input-error');
+                        setTimeout(() => subjName.classList.remove('input-error'), 500);
+                        subjName.focus();
+                        isValid = false; break;
+                    }
+                    const subjBirthday = document.getElementById(`subject_birthday-${orderId}`);
+                    if (p > 0 && !subjBirthday.value) {
+                        alert(`【委託圖 #${orderId}】畫人物時，請填寫生日喔！`);
+                        subjBirthday.classList.add('input-error');
+                        setTimeout(() => subjBirthday.classList.remove('input-error'), 500);
+                        subjBirthday.focus();
+                        isValid = false; break;
+                    }
+                }
             }
+
+            if (!isValid) return false;
+
             if (!address && !store) {
                 errorMsg.classList.remove('hidden');
                 errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return false;
             }
-            // 驗證貼紙選擇
-            const stickerChoice = document.querySelector('input[name="sticker"]:checked');
-            if(stickerChoice && stickerChoice.value === "好呀" && !selectedSticker) {
-                alert("您選擇了要貼紙，請從 21 張圖中選一張喔！");
-                document.getElementById('sticker-interactive-area').scrollIntoView({behavior: "smooth"});
-                return false;
-            }
-
             if (!document.getElementById('name').value || !document.getElementById('phone').value || !document.getElementById('ig_account').value || !document.getElementById('bank_last_5').value) {
                 alert("請填寫所有必填欄位！");
                 return false;
@@ -1168,49 +1225,75 @@
 
         async function submitFormToGoogle() {
             if (!validateForm()) return;
-            if (SCRIPT_URL.includes("您的_GOOGLE_APPS_SCRIPT")) {
-                alert("請先設定 Google Apps Script 網址！");
-                return;
-            }
-
             const loading = document.getElementById('loading-overlay');
             loading.classList.remove('hidden');
             loading.style.display = 'flex';
 
             try {
+                // 檢查總檔案大小 (約 25MB)
+                let totalSize = 0;
+                const allFileInputs = document.querySelectorAll('input[type="file"]');
+                allFileInputs.forEach(input => {
+                    if (input.files) {
+                        for (let i = 0; i < input.files.length; i++) {
+                            totalSize += input.files[i].size;
+                        }
+                    }
+                });
+
+                if (totalSize > 25 * 1024 * 1024) {
+                    if(!confirm("⚠️ 您的照片檔案總和較大 (>25MB)，可能會導致傳送失敗。\n\n建議您「分批下單」或將照片上傳至雲端後提供連結。\n\n要嘗試繼續傳送嗎？")) {
+                        loading.classList.add('hidden');
+                        return;
+                    }
+                }
+
                 let orderDetails = [];
                 let allFiles = [];
+                let combinedStickerInfo = [];
+                let combinedSubjectNames = [];
+                let combinedSubjectBirthdays = [];
 
                 const cards = document.querySelectorAll('.order-card');
                 for (let i = 0; i < cards.length; i++) {
                     const card = cards[i];
-                    const p = card.querySelector('input[id^="qty-people"]').value;
-                    const a = card.querySelector('input[id^="qty-pet"]').value;
-                    const combo = card.querySelector('input[id^="combo"]').value;
-                    const fileInput = card.querySelector('input[type="file"]');
+                    const orderId = card.id.split('-')[1];
+                    const p = card.querySelector(`input[id^="qty-people"]`).value;
+                    const a = card.querySelector(`input[id^="qty-pet"]`).value;
+                    const combo = card.querySelector(`input[id^="combo"]`).value;
+                    const fileInput = card.querySelector(`input[type="file"]`);
                     
                     if (p > 0 || a > 0) {
-                        orderDetails.push(`【委託圖 ${i+1}】: 人${p}/寵${a} (${combo || "無備註"})`);
+                        orderDetails.push(`【委託圖 ${orderId}】: 人${p}/寵${a} (${combo || "無備註"})`);
                         
+                        const stickerChoice = document.querySelector(`input[name="sticker-${orderId}"]:checked`).value;
+                        if (stickerChoice === "好呀" && orderStates[orderId].selectedSticker) {
+                            const s = orderStates[orderId].selectedSticker;
+                            const bless = s.elements.map(e => e.text).join('/');
+                            combinedStickerInfo.push(`【圖${orderId}】${s.name}: ${bless}`);
+                            
+                            const sName = document.getElementById(`subject_name-${orderId}`).value;
+                            const sBirth = document.getElementById(`subject_birthday-${orderId}`).value;
+                            combinedSubjectNames.push(`【圖${orderId}】${sName}`);
+                            combinedSubjectBirthdays.push(`【圖${orderId}】${sBirth || "無"}`);
+                        } else {
+                            combinedStickerInfo.push(`【圖${orderId}】無`);
+                            combinedSubjectNames.push(`【圖${orderId}】無`);
+                            combinedSubjectBirthdays.push(`【圖${orderId}】無`);
+                        }
+
                         if (fileInput.files.length > 0) {
                             for (let j = 0; j < fileInput.files.length; j++) {
                                 const file = fileInput.files[j];
                                 const base64 = await fileToBase64(file);
                                 allFiles.push({
-                                    name: `Order${i+1}_${file.name}`,
+                                    name: `Order${orderId}_${file.name}`,
                                     type: file.type,
                                     base64: base64
                                 });
                             }
                         }
                     }
-                }
-
-                // 處理貼紙資訊
-                let stickerInfo = "無";
-                if (document.querySelector('input[name="sticker"]:checked')?.value === "好呀" && selectedSticker) {
-                    const blessings = selectedSticker.elements.map(e => e.text).join('/');
-                    stickerInfo = `${selectedSticker.name} (祝福: ${blessings})`;
                 }
 
                 const payload = {
@@ -1220,7 +1303,9 @@
                     shipping_info: document.getElementById('shipping_address').value || document.getElementById('shipping_store').value,
                     bank_last_5: document.getElementById('bank_last_5').value,
                     total_amount: calculateTotal(),
-                    sticker: stickerInfo,
+                    sticker: combinedStickerInfo.join("\n"),
+                    subject_name: combinedSubjectNames.join("\n"),
+                    subject_birthday: combinedSubjectBirthdays.join("\n"),
                     order_details: orderDetails.join("\n"),
                     files: allFiles
                 };
@@ -1231,13 +1316,11 @@
                     mode: 'no-cors'
                 });
 
-                loading.style.display = 'none';
                 loading.classList.add('hidden');
                 alert('委託單已送出！我們會盡快與您聯繫 ❤');
                 window.location.reload();
 
             } catch (error) {
-                loading.style.display = 'none';
                 loading.classList.add('hidden');
                 console.error(error);
                 alert('傳送失敗，請稍後再試，或直接 IG 私訊我們！');
@@ -1246,5 +1329,3 @@
     </script>
 </body>
 </html>
-
-
