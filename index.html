@@ -4,494 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>手繪❤祝福似顏繪 | Official Commission</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Noto Sans TC (黑體) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            /* 主色調：深海藍 */
-            --primary: #0c4a6e;    
-            --text-main: #1e293b;   
-            
-            /* 背景：極淺藍 */
-            --bg-color: #f0f9ff;   
-            --card-bg: #ffffff;    
-            
-            /* 重點色：豹豹桃粉紅 (強制寫死) */
-            --accent-pink: #ff5fab; 
-            --accent-light: #fff0f7;
-            
-            /* 匯款資訊專用淡藍色 */
-            --bank-bg: #f0f9ff;
-            --bank-border: #bae6fd;
-            --bank-text: #0284c7;
-        }
-        
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#e0f2fe 2px, transparent 2px);
-            background-size: 24px 24px;
-            color: var(--text-main);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            box-sizing: border-box;
-        }
-
-        /* 導覽列 */
-        .nav-glass {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 95, 171, 0.2);
-        }
-
-        /* 導覽列按鈕 */
-        .nav-btn {
-            cursor: pointer;
-            transition: all 0.3s;
-            color: #64748b;
-            font-weight: 500;
-        }
+        :root { --primary: #0c4a6e; --text-main: #1e293b; --bg-color: #f0f9ff; --card-bg: #ffffff; --accent-pink: #ff5fab; --accent-light: #fff0f7; --bank-bg: #f0f9ff; --bank-border: #bae6fd; --bank-text: #0284c7; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-color); background-image: radial-gradient(#e0f2fe 2px, transparent 2px); background-size: 24px 24px; color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; box-sizing: border-box; }
+        .nav-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 95, 171, 0.2); }
+        .nav-btn { cursor: pointer; transition: all 0.3s; color: #64748b; font-weight: 500; }
         .nav-btn:hover { color: var(--accent-pink); }
-        .nav-btn.active {
-            color: var(--accent-pink);
-            font-weight: bold;
-            position: relative;
-        }
-        .nav-btn.active::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 2px;
-            background: var(--accent-pink);
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-        }
-
-        /* Hero */
-        .hero-section {
-            padding: 60px 20px 80px 20px;
-            text-align: center;
-        }
-
-        /* 分頁切換控制 */
-        .page-section {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in;
-        }
-        .page-section.active {
-            display: block;
-            opacity: 1;
-        }
-
-        /* 作品集容器 */
-        .portfolio-container {
-            width: 92% !important;
-            max-width: 1000px !important;
-            margin: 0 auto 60px auto !important;
-        }
-        
-        /* 作品卡片 */
-        .work-card {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(12, 74, 110, 0.05);
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-        .work-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(255, 95, 171, 0.15);
-            border-color: var(--accent-pink);
-        }
-        .work-img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            background-color: #e0f2fe;
-        }
-
-        /* 表單容器 */
-        .form-container {
-            width: 92% !important;
-            max-width: 800px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            margin-top: -40px !important;
-            margin-bottom: 120px !important;
-            background: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(12, 74, 110, 0.06);
-            padding: 30px 20px !important;
-            position: relative;
-            z-index: 10;
-            border: 2px solid #fff;
-            box-sizing: border-box !important;
-        }
-
-        /* 輸入框美化 */
-        .site-input {
-            display: block;
-            width: 100% !important;
-            min-width: 0 !important;
-            max-width: 100% !important;
-            padding: 12px 16px;
-            background-color: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            transition: all 0.3s;
-            color: var(--text-main);
-            font-size: 16px;
-            box-sizing: border-box !important;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        .site-input:focus {
-            outline: none;
-            border-color: var(--accent-pink) !important;
-            background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(255, 95, 171, 0.15);
-            position: relative; 
-            z-index: 5; 
-        }
-
-        /* 錯誤狀態的輸入框 */
-        .input-error {
-            border-color: #ef4444 !important;
-            background-color: #fef2f2 !important;
-            animation: shake 0.4s ease-in-out;
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        /* 訂單卡片 */
-        .order-card {
-            background: #fff;
-            border: 2px solid var(--accent-pink) !important; 
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-            transition: transform 0.2s, box-shadow 0.2s;
-            overflow: visible !important; 
-            box-sizing: border-box !important; 
-        }
-        
-        .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 95, 171, 0.15);
-        }
-
-        /* 計數器按鈕 */
-        .qty-btn {
-            width: 40px; height: 40px;
-            border-radius: 50%; border: 2px solid #e2e8f0;
-            background: white; color: var(--text-main);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-weight: bold; font-size: 1.2rem;
-            transition: all 0.2s; user-select: none;
-        }
-        .qty-btn:active, .qty-btn:hover {
-            background: var(--accent-pink); border-color: var(--accent-pink); color: #fff;
-        }
-
-        /* 底部浮動條 */
-        .bottom-bar {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            margin: 0 auto; max-width: 600px;
-            background: rgba(12, 74, 110, 0.95); backdrop-filter: blur(10px);
-            color: white; padding: 12px 20px; border-radius: 50px;
-            display: none; justify-content: space-between; align-items: center;
-            box-shadow: 0 15px 30px rgba(12, 74, 110, 0.3);
-            z-index: 100; border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .nav-btn.active { color: var(--accent-pink); font-weight: bold; position: relative; }
+        .nav-btn.active::after { content: ''; display: block; width: 100%; height: 2px; background: var(--accent-pink); position: absolute; bottom: -4px; left: 0; }
+        .hero-section { padding: 60px 20px 80px 20px; text-align: center; }
+        .page-section { display: none; opacity: 0; transition: opacity 0.3s ease-in; }
+        .page-section.active { display: block; opacity: 1; }
+        .portfolio-container { width: 92% !important; max-width: 1000px !important; margin: 0 auto 60px auto !important; }
+        .work-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(12, 74, 110, 0.05); transition: all 0.3s; border: 2px solid transparent; cursor: pointer; }
+        .work-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 95, 171, 0.15); border-color: var(--accent-pink); }
+        .work-img { width: 100%; height: 300px; object-fit: cover; background-color: #e0f2fe; }
+        .form-container { width: 92% !important; max-width: 800px !important; margin-left: auto !important; margin-right: auto !important; margin-top: -40px !important; margin-bottom: 120px !important; background: var(--card-bg); border-radius: 24px; box-shadow: 0 20px 40px rgba(12, 74, 110, 0.06); padding: 30px 20px !important; position: relative; z-index: 10; border: 2px solid #fff; box-sizing: border-box !important; }
+        .site-input { display: block; width: 100% !important; min-width: 0 !important; max-width: 100% !important; padding: 12px 16px; background-color: #ffffff; border: 2px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; color: var(--text-main); font-size: 16px; box-sizing: border-box !important; -webkit-appearance: none; appearance: none; }
+        .site-input:focus { outline: none; border-color: var(--accent-pink) !important; background-color: #fff; box-shadow: 0 0 0 4px rgba(255, 95, 171, 0.15); position: relative; z-index: 5; }
+        .input-error { border-color: #ef4444 !important; background-color: #fef2f2 !important; animation: shake 0.4s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .order-card { background: #fff; border: 2px solid var(--accent-pink) !important; border-radius: 16px; padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); transition: transform 0.2s, box-shadow 0.2s; overflow: visible !important; box-sizing: border-box !important; }
+        .order-card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 95, 171, 0.15); }
+        .qty-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e2e8f0; background: white; color: var(--text-main); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: all 0.2s; user-select: none; }
+        .qty-btn:active, .qty-btn:hover { background: var(--accent-pink); border-color: var(--accent-pink); color: #fff; }
+        .bottom-bar { position: fixed; bottom: 20px; left: 20px; right: 20px; margin: 0 auto; max-width: 600px; background: rgba(12, 74, 110, 0.95); backdrop-filter: blur(10px); color: white; padding: 12px 20px; border-radius: 50px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px rgba(12, 74, 110, 0.3); z-index: 100; border: 1px solid rgba(255, 255, 255, 0.1); }
         .bottom-bar.show { display: flex; }
-
-        /* 標題樣式 */
-        .section-title {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; font-size: 1.5rem; font-weight: 700;
-            color: var(--primary); margin-bottom: 30px; position: relative;
-        }
-        .section-title::after {
-            content: ''; display: block; width: 60px; height: 4px;
-            background: var(--accent-pink); border-radius: 2px;
-            position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
-        }
-        .form-section-title {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 1.25rem; font-weight: 700; color: var(--primary);
-            margin-bottom: 20px; padding-bottom: 10px;
-            border-bottom: 2px dashed #e2e8f0;
-        }
-        /* 強制所有 Lucide 圖標使用主題色 */
-        .section-title i, .form-section-title i, .section-title svg {
-            color: var(--accent-pink) !important;
-        }
-        
-        /* 選項 Radio 樣式 */
+        .section-title { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 30px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--accent-pink); border-radius: 2px; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
+        .form-section-title { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px dashed #e2e8f0; }
+        .section-title i, .form-section-title i, .section-title svg { color: var(--accent-pink) !important; }
         .radio-box { display: block; cursor: pointer; position: relative; margin: 2px; }
-        .radio-box input:checked + div {
-            background-color: var(--accent-light);
-            border: 2px solid var(--accent-pink) !important; 
-            color: #be185d;
-            box-shadow: 0 4px 10px rgba(255, 95, 171, 0.2);
-            font-weight: bold;
-        }
-        .radio-inner {
-            border: 2px solid #e2e8f0; border-radius: 12px;
-            padding: 16px; text-align: center; transition: all 0.2s;
-            font-weight: 500; color: #64748b;
-            box-sizing: border-box !important;
-        }
-        .radio-box:hover .radio-inner {
-            border-color: #fbcfe8; color: var(--accent-pink);
-        }
-
+        .radio-box input:checked + div { background-color: var(--accent-light); border: 2px solid var(--accent-pink) !important; color: #be185d; box-shadow: 0 4px 10px rgba(255, 95, 171, 0.2); font-weight: bold; }
+        .radio-inner { border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; transition: all 0.2s; font-weight: 500; color: #64748b; box-sizing: border-box !important; }
+        .radio-box:hover .radio-inner { border-color: #fbcfe8; color: var(--accent-pink); }
         .required-star { color: #ef4444; margin-left: 4px; font-weight: bold; }
-
-        /* 匯款資訊 */
-        .bank-info-box {
-            background-color: var(--bank-bg);
-            border: 1px solid var(--bank-border);
-            color: var(--primary);
-        }
+        .bank-info-box { background-color: var(--bank-bg); border: 1px solid var(--bank-border); color: var(--primary); }
         .bank-info-box span.title { color: var(--bank-text); }
         .bank-info-box span.number { color: var(--primary); }
-
-        /* 運費與聯絡區塊 */
-        .shipping-container {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 24px;
-            position: relative;
-            overflow: visible !important; 
-        }
-        .shipping-badge {
-            position: absolute; top: -2px; right: -2px;
-            background-color: var(--accent-pink);
-            color: white; font-size: 0.75rem; font-weight: bold;
-            padding: 6px 16px;
-            border-top-right-radius: 14px; border-bottom-left-radius: 12px;
-            box-shadow: -2px 2px 5px rgba(0,0,0,0.05); z-index: 5;
-        }
-
-        /* 燈箱 */
-        #gallery-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); z-index: 200;
-            display: none; justify-content: center; align-items: center;
-            padding: 20px; opacity: 0; transition: opacity 0.3s;
-        }
+        .shipping-container { background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 24px; position: relative; overflow: visible !important; }
+        .shipping-badge { position: absolute; top: -2px; right: -2px; background-color: var(--accent-pink); color: white; font-size: 0.75rem; font-weight: bold; padding: 6px 16px; border-top-right-radius: 14px; border-bottom-left-radius: 12px; box-shadow: -2px 2px 5px rgba(0,0,0,0.05); z-index: 5; }
+        #gallery-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 200; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.3s; }
         #gallery-modal.open { display: flex; opacity: 1; }
-        .modal-content {
-            background: white; border-radius: 20px;
-            max-width: 900px; width: 100%; max-height: 90vh;
-            overflow-y: auto; position: relative; padding: 20px;
-        }
-        .modal-close {
-            position: absolute; top: 15px; right: 15px;
-            background: #fff; border-radius: 50%; padding: 8px;
-            cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            color: var(--text-main); z-index: 10;
-        }
-
-        /* 載入中遮罩 */
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.9); z-index: 300;
-            display: none; flex-col; justify-content: center; align-items: center;
-            text-align: center;
-        }
-        .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid #f3f3f3; border-top: 5px solid var(--accent-pink);
-            border-radius: 50%; animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
+        .modal-content { background: white; border-radius: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; padding: 20px; }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: #fff; border-radius: 50%; padding: 8px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); color: var(--text-main); z-index: 10; }
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9); z-index: 300; display: none; flex-col; justify-content: center; align-items: center; text-align: center; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--accent-pink); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* --- 貼紙選擇與翻牌特效 --- */
-        .sticker-grid-item {
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
-        }
-        .sticker-grid-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(255, 95, 171, 0.2);
-        }
-        .sticker-grid-item.selected {
-            border: 3px solid var(--accent-pink);
-            background-color: var(--accent-light);
-            box-shadow: 0 0 15px rgba(255, 95, 171, 0.3);
-            padding: 2px;
-        }
-
-        /* 翻牌卡片容器 */
-        .flip-card {
-            background-color: transparent;
-            width: 75px; height: 75px; 
-            perspective: 1000px; 
-            cursor: pointer;
-            margin: 0 auto;
-            position: relative; 
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            flex-shrink: 0; 
-        }
-        
-        /* 卡片內部 - 設定 3D 轉場 */
-        .flip-card-inner {
-            position: relative;
-            width: 100%; height: 100%;
-            text-align: center;
-            transform-style: preserve-3d;
-            z-index: 2; 
-            /* 預設是心跳動畫 */
-            animation: card-heartbeat 2s infinite ease-in-out;
-            transform-origin: center center;
-        }
-        
-        /* 純粹的螺旋翻轉，不縮放 */
-        @keyframes magic-spin-flip {
-            0% {
-                transform: rotateY(0deg) rotateZ(0deg);
-            }
-            100% {
-                transform: rotateY(180deg) rotateZ(360deg);
-            }
-        }
-
-        /* 當加上 flipped class 時，套用翻轉動畫 */
-        .flip-card.flipped .flip-card-inner {
-            /* 0.8s 完成翻轉，停在最後一格 */
-            animation: magic-spin-flip 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        /* 翻完後的落地 Q 彈動畫 (作用在最外層容器) */
-        @keyframes land-bounce {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.15); } /* 變大 */
-            50% { transform: scale(0.95); } /* 被壓扁 */
-            70% { transform: scale(1.05); } /* 回彈 */
-            100% { transform: scale(1); }
-        }
-
-        /* 這個 class 會由 JS 在翻牌結束後加上 */
-        .flip-card-landed {
-            animation: land-bounce 0.5s ease-out;
-        }
-
-        @keyframes card-heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* 正反面 */
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%; height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .flip-card-front {
-            background-color: #fff0f7;
-            color: var(--accent-pink);
-            border: 2px solid var(--accent-pink);
-        }
-
-        /* 閃亮亮背板樣式 (微光澤背景) */
-        .flip-card-back {
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e0f2fe 100%); 
-            color: var(--primary); 
-            transform: rotateY(180deg);
-            border: 2px solid #bae6fd;
-            flex-direction: column; 
-            padding: 4px;
-            box-shadow: inset 0 0 15px rgba(186, 230, 253, 0.4), 0 4px 6px rgba(0,0,0,0.1);
-            overflow: hidden; 
-        }
-
-        /* 超閃亮流光特效 (Sheen) */
-        .flip-card-back::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -200%;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(
-                105deg, 
-                transparent 30%, 
-                rgba(255, 255, 255, 0.4) 40%, 
-                rgba(255, 255, 255, 0.9) 45%, 
-                rgba(255, 255, 255, 1) 50%, 
-                rgba(255, 255, 255, 0.9) 55%, 
-                rgba(255, 255, 255, 0.4) 60%, 
-                transparent 70%
-            );
-            transform: skewX(-20deg);
-            pointer-events: none;
-        }
-
-        /* 翻牌後的狀態：光掃過去 + 桃紅外發光 */
-        .flip-card.flipped .flip-card-back {
-            box-shadow: 0 0 15px rgba(255, 95, 171, 0.6);
-            border-color: var(--accent-pink);
-        }
-
-        .flip-card.flipped .flip-card-back::after {
-            /* 配合旋轉時間，延遲一點點才閃光 */
-            animation: shine-sweep 0.7s cubic-bezier(0.4, 0.0, 0.2, 1) forwards 0.2s; 
-        }
-
-        @keyframes shine-sweep {
-            0% { left: -200%; opacity: 0; }
-            20% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-        }
-
-        /* 碎紙花 (Confetti) 粒子 */
-        .confetti-particle {
-            position: fixed;
-            width: 6px; height: 6px;
-            border-radius: 2px;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 1;
-        }
-
-        @media (min-width: 768px) {
-            .flip-card { width: 110px; height: 110px; }
-        }
+        .sticker-grid-item { cursor: pointer; border: 2px solid transparent; transition: all 0.2s; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #fff; }
+        .sticker-grid-item:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(255, 95, 171, 0.2); }
+        .sticker-grid-item.selected { border: 3px solid var(--accent-pink); background-color: var(--accent-light); box-shadow: 0 0 15px rgba(255, 95, 171, 0.3); padding: 2px; }
+        .flip-card { background-color: transparent; width: 75px; height: 75px; perspective: 1000px; cursor: pointer; margin: 0 auto; position: relative; user-select: none; -webkit-tap-highlight-color: transparent; flex-shrink: 0; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transform-style: preserve-3d; z-index: 2; animation: card-heartbeat 2s infinite ease-in-out; transform-origin: center center; }
+        @keyframes magic-spin-flip { 0% { transform: rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateY(180deg) rotateZ(360deg); } }
+        .flip-card.flipped .flip-card-inner { animation: magic-spin-flip 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes land-bounce { 0% { transform: scale(1); } 30% { transform: scale(1.15); } 50% { transform: scale(0.95); } 70% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .flip-card-landed { animation: land-bounce 0.5s ease-out; }
+        @keyframes card-heartbeat { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .flip-card-front { background-color: #fff0f7; color: var(--accent-pink); border: 2px solid var(--accent-pink); }
+        .flip-card-back { background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e0f2fe 100%); color: var(--primary); transform: rotateY(180deg); border: 2px solid #bae6fd; flex-direction: column; padding: 4px; box-shadow: inset 0 0 15px rgba(186, 230, 253, 0.4), 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; }
+        .flip-card-back::after { content: ""; position: absolute; top: 0; left: -200%; width: 200%; height: 100%; background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.9) 55%, rgba(255, 255, 255, 0.4) 60%, transparent 70%); transform: skewX(-20deg); pointer-events: none; }
+        .flip-card.flipped .flip-card-back { box-shadow: 0 0 15px rgba(255, 95, 171, 0.6); border-color: var(--accent-pink); }
+        .flip-card.flipped .flip-card-back::after { animation: shine-sweep 0.7s cubic-bezier(0.4, 0.0, 0.2, 1) forwards 0.2s; }
+        @keyframes shine-sweep { 0% { left: -200%; opacity: 0; } 20% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
+        .confetti-particle { position: fixed; width: 6px; height: 6px; border-radius: 2px; pointer-events: none; z-index: 9999; opacity: 1; }
+        @media (min-width: 768px) { .flip-card { width: 110px; height: 110px; } }
     </style>
 </head>
 <body class="pb-32">
-
     <!-- 載入中遮罩 -->
     <div id="loading-overlay" class="hidden">
         <div class="spinner"></div>
@@ -504,17 +88,12 @@
     <nav class="nav-glass sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center relative">
             <span class="text-xl font-bold tracking-widest text-[#0c4a6e] cursor-pointer" onclick="switchPage('works')">雪豹豹豹</span>
-            
             <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
                 <span id="nav-desktop-works" class="nav-btn active" onclick="switchPage('works')">似顏繪作品</span>
                 <span id="nav-desktop-commission" class="nav-btn" onclick="switchPage('commission')">委託表單</span>
             </div>
-
-            <button class="md:hidden text-[#0c4a6e] hover:text-[#ff5fab] focus:outline-none p-2" onclick="toggleMenu()">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
+            <button class="md:hidden text-[#0c4a6e] hover:text-[#ff5fab] focus:outline-none p-2" onclick="toggleMenu()"><i data-lucide="menu" class="w-6 h-6"></i></button>
         </div>
-
         <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-t border-[#ff5fab]/20 absolute w-full left-0 shadow-lg z-50">
             <div class="flex flex-col p-4 space-y-4 text-center">
                 <span id="nav-mobile-works" class="text-[#1e293b] font-bold text-lg py-2 text-[#ff5fab]" onclick="switchPage('works'); toggleMenu()">似顏繪作品</span>
@@ -527,9 +106,7 @@
     <section class="hero-section">
         <div class="max-w-2xl mx-auto py-4">
             <h1 class="text-4xl md:text-5xl font-bold text-[#0c4a6e] mb-2 leading-tight flex items-center justify-center gap-2 flex-wrap">
-                手繪
-                <i data-lucide="heart" class="w-10 h-10 md:w-12 md:h-12 fill-[#ff5fab] text-[#ff5fab]"></i>
-                祝福似顏繪
+                手繪 <i data-lucide="heart" class="w-10 h-10 md:w-12 md:h-12 fill-[#ff5fab] text-[#ff5fab] inline-block"></i> 祝福似顏繪
             </h1>
             <div class="flex flex-col items-center gap-1 mt-2">
                 <p class="text-sm font-bold text-[#ff5fab]">★用我的 "風格" 畫出漂漂亮亮的大家★</p>
@@ -538,54 +115,33 @@
         </div>
     </section>
 
-    <!-- 相簿燈箱 (人物似顏繪) -->
+    <!-- 相簿燈箱 -->
     <div id="gallery-modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeGallery()">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
+            <button class="modal-close" onclick="closeGallery()"><i data-lucide="x" class="w-6 h-6"></i></button>
             <h3 id="gallery-title" class="text-2xl font-bold text-[#0c4a6e] mb-6 text-center border-b border-[#e2e8f0] pb-4">相簿</h3>
-            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Javascript will populate this -->
-            </div>
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
     </div>
 
     <!-- PAGE 1: 似顏繪作品 -->
     <div id="page-works" class="page-section active">
         <div class="portfolio-container">
-            <div class="section-title">
-                <i data-lucide="image"></i> 似顏繪作品
-            </div>
-            
+            <div class="section-title"><i data-lucide="image"></i> 似顏繪作品</div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 相簿 1 -->
                 <div class="work-card group" onclick="openGallery('blessing')">
-                    <img src="https://placehold.co/600x800/f0f9ff/ff5fab?text=Blessing+Portrait" alt="祝福似顏繪" class="work-img">
-                    <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">
-                        祝福似顏繪
-                    </div>
+                    <img src="https://placehold.co/600x800/f0f9ff/ff5fab?text=Blessing" alt="祝福似顏繪" class="work-img">
+                    <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">祝福似顏繪</div>
                 </div>
-
-                <!-- 相簿 2 -->
                 <div class="work-card group" onclick="openGallery('portrait')">
-                    <div class="relative">
-                        <img src="p1.png" onerror="this.src='https://placehold.co/600x800/f0f9ff/ff5fab?text=Click+to+View'" alt="人物似顏繪" class="work-img">
-                    </div>
-                    <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">
-                        人像似顏繪
-                    </div>
+                    <div class="relative"><img src="p1.png" onerror="this.src='https://placehold.co/600x800/f0f9ff/ff5fab?text=Portrait'" class="work-img"></div>
+                    <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">人像似顏繪</div>
                 </div>
-
-                <!-- 相簿 3 -->
                 <div class="work-card group" onclick="openGallery('pet')">
-                    <img src="https://placehold.co/600x800/f0f9ff/ff5fab?text=Pet+Portrait" alt="寵物似顏繪" class="work-img">
-                    <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">
-                        寵物似顏繪
-                    </div>
+                    <img src="https://placehold.co/600x800/f0f9ff/ff5fab?text=Pet" alt="寵物似顏繪" class="work-img">
+                    <div class="p-4 text-center font-bold text-[#0c4a6e] text-lg group-hover:text-[#ff5fab] transition-colors">寵物似顏繪</div>
                 </div>
             </div>
-
             <div class="mt-12 text-center">
                 <button onclick="switchPage('commission'); window.scrollTo(0,0);" class="bg-white border-2 border-[#ff5fab] text-[#ff5fab] px-8 py-3 rounded-full font-bold hover:bg-[#ff5fab] hover:text-white active:bg-[#ff5fab] active:text-white transition shadow-lg transform hover:scale-105 active:scale-95 select-none flex items-center justify-center gap-2 mx-auto">
                     來張似顏繪吧 <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
@@ -596,87 +152,44 @@
 
     <!-- PAGE 2: 委託表單 -->
     <div id="page-commission" class="page-section form-container">
-        
         <form id="commissionForm">
-            
-            <!-- 1. 委託內容 -->
             <div class="mb-14">
-                <h3 class="form-section-title">
-                    <i data-lucide="palette" class="text-[#ff5fab]"></i> 委託內容與照片 <span class="required-star">*</span>
-                </h3>
-                <p class="text-sm text-[#64748b] mb-6 bg-[#f0f9ff] p-4 rounded-xl border border-[#e0f2fe]">
-                    <i data-lucide="info" class="w-4 h-4 inline mr-1 text-[#ff5fab]"></i>
-                    請為每一張想要畫的圖分別設定人數與上傳照片 (支援原始解析度)。
-                </p>
-
+                <h3 class="form-section-title"><i data-lucide="palette" class="text-[#ff5fab]"></i> 委託內容與照片 <span class="required-star">*</span></h3>
+                <p class="text-sm text-[#64748b] mb-6 bg-[#f0f9ff] p-4 rounded-xl border border-[#e0f2fe]"><i data-lucide="info" class="w-4 h-4 inline mr-1 text-[#ff5fab]"></i> 請為每一張想要畫的圖分別設定人數與上傳照片 (支援原始解析度)。</p>
                 <div id="orders-container"></div>
-
                 <div onclick="addOrder()" class="w-full py-4 border-2 border-dashed border-[#ff5fab] rounded-xl text-[#ff5fab] font-bold text-center cursor-pointer hover:bg-[#fff0f7] transition flex items-center justify-center gap-2 active:scale-95 select-none">
                     <i data-lucide="plus-circle" class="w-5 h-5 text-[#ff5fab]"></i> 新增一張委託圖
                 </div>
             </div>
 
-            <!-- 3. 寄送與聯絡資訊 -->
             <div id="shipping-section" class="mb-14 transition-all duration-500">
-                <h3 class="form-section-title">
-                    <i data-lucide="truck" class="text-[#ff5fab]"></i> 寄送與聯絡資訊
-                </h3>
-
+                <h3 class="form-section-title"><i data-lucide="truck" class="text-[#ff5fab]"></i> 寄送與聯絡資訊</h3>
                 <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-bold text-[#0c4a6e] mb-2">姓名 <span class="required-star">*</span></label>
-                        <input type="text" id="name" required class="site-input" placeholder="真實姓名">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-[#0c4a6e] mb-2">IG 帳號 <span class="required-star">*</span></label>
-                        <input type="text" id="ig_account" required class="site-input" placeholder="@your_id">
-                    </div>
+                    <div><label class="block text-sm font-bold text-[#0c4a6e] mb-2">姓名 <span class="required-star">*</span></label><input type="text" id="name" required class="site-input" placeholder="真實姓名"></div>
+                    <div><label class="block text-sm font-bold text-[#0c4a6e] mb-2">IG 帳號 <span class="required-star">*</span></label><input type="text" id="ig_account" required class="site-input" placeholder="@your_id"></div>
                 </div>
-
                 <div class="shipping-container">
                     <div class="shipping-badge">運費 $60</div>
-                    
-                    <div class="mb-8">
-                        <label class="block text-sm font-bold text-[#0c4a6e] mb-2">手機號碼 <span class="required-star">*</span></label>
-                        <input type="text" id="phone" required class="site-input bg-white" placeholder="09xx-xxx-xxx">
-                    </div>
-
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="h-px bg-[#e2e8f0] flex-1"></div>
-                        <span class="text-xs text-[#94a3b8] font-bold tracking-wider">寄送方式擇一填寫 <span class="required-star">*</span></span>
-                        <div class="h-px bg-[#e2e8f0] flex-1"></div>
-                    </div>
-
+                    <div class="mb-8"><label class="block text-sm font-bold text-[#0c4a6e] mb-2">手機號碼 <span class="required-star">*</span></label><input type="text" id="phone" required class="site-input bg-white" placeholder="09xx-xxx-xxx"></div>
+                    <div class="flex items-center gap-4 mb-6"><div class="h-px bg-[#e2e8f0] flex-1"></div><span class="text-xs text-[#94a3b8] font-bold tracking-wider">寄送方式擇一填寫 <span class="required-star">*</span></span><div class="h-px bg-[#e2e8f0] flex-1"></div></div>
                     <div class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-bold text-[#64748b] mb-1">【郵寄】地址</label>
-                            <input type="text" id="shipping_address" class="site-input bg-white" placeholder="包含郵遞區號">
-                        </div>
+                        <div><label class="block text-sm font-bold text-[#64748b] mb-1">【郵寄】地址</label><input type="text" id="shipping_address" class="site-input bg-white" placeholder="包含郵遞區號"></div>
                         <div class="text-center text-xs text-[#cbd5e1] font-bold">OR</div>
-                        <div>
-                            <label class="block text-sm font-bold text-[#64748b] mb-1">【超商】門市資料 (7-11)</label>
-                            <input type="text" id="shipping_store" class="site-input bg-white" placeholder="門市名稱 / 店號">
-                        </div>
+                        <div><label class="block text-sm font-bold text-[#64748b] mb-1">【超商】門市資料 (7-11)</label><input type="text" id="shipping_store" class="site-input bg-white" placeholder="門市名稱 / 店號"></div>
                     </div>
                     <p id="shipping-error" class="text-red-500 text-xs mt-3 hidden text-center font-bold bg-red-50 p-2 rounded">⚠️ 請至少填寫一種寄送方式</p>
                 </div>
             </div>
 
-            <!-- 4. 付款與確認 -->
             <div class="mb-8">
-                <h3 class="form-section-title">
-                    <i data-lucide="check-circle" class="text-[#ff5fab]"></i> 付款與確認
-                </h3>
-
+                <h3 class="form-section-title"><i data-lucide="check-circle" class="text-[#ff5fab]"></i> 付款與確認</h3>
                 <div class="mb-8">
                     <label class="block text-sm font-bold text-[#0c4a6e] mb-2">匯款帳戶後五碼 <span class="required-star">*</span></label>
                     <div class="bank-info-box p-5 rounded-xl mb-3 flex justify-between items-center shadow-sm">
-                        <span class="text-sm font-medium title">國泰世華</span>
-                        <span class="text-xl font-mono font-bold number tracking-wider">133500097892</span>
+                        <span class="text-sm font-medium title">國泰世華</span><span class="text-xl font-mono font-bold number tracking-wider">133500097892</span>
                     </div>
                     <input type="text" id="bank_last_5" required class="site-input" placeholder="請填寫後五碼">
                 </div>
-
                 <div class="space-y-4">
                     <div class="bg-[#f8fafc] p-5 rounded-xl text-xs text-[#64748b] space-y-1.5 leading-relaxed border border-[#e2e8f0]">
                         <p class="font-bold text-[#0c4a6e] mb-1">注意事項：</p>
@@ -689,36 +202,18 @@
                             <li>如寄送出問題無法免費補畫一張，只能給您作品完成照片</li>
                         </ul>
                     </div>
-
-                    <label class="flex items-center gap-3 cursor-pointer group p-2 hover:bg-[#fff0f7] rounded-lg transition">
-                        <input type="checkbox" id="notify_check" required class="w-5 h-5 accent-[#ff5fab] rounded border-gray-300">
-                        <span class="text-sm text-[#475569] group-hover:text-[#ff5fab] transition">收到成品後請 IG私訊 @joanna_snowleopard 報平安呦 <span class="required-star">*</span></span>
-                    </label>
-
-                    <label class="flex items-center gap-3 cursor-pointer group p-2 hover:bg-[#fff0f7] rounded-lg transition">
-                        <input type="checkbox" id="terms_check" required class="w-5 h-5 accent-[#ff5fab] rounded border-gray-300">
-                        <span class="text-sm font-bold text-[#0c4a6e] group-hover:text-[#ff5fab] transition">沒問題，我同意以上事項👌🏻 <span class="required-star">*</span></span>
-                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group p-2 hover:bg-[#fff0f7] rounded-lg transition"><input type="checkbox" id="notify_check" required class="w-5 h-5 accent-[#ff5fab] rounded border-gray-300"><span class="text-sm text-[#475569] group-hover:text-[#ff5fab] transition">收到成品後請 IG私訊 @joanna_snowleopard 報平安呦 <span class="required-star">*</span></span></label>
+                    <label class="flex items-center gap-3 cursor-pointer group p-2 hover:bg-[#fff0f7] rounded-lg transition"><input type="checkbox" id="terms_check" required class="w-5 h-5 accent-[#ff5fab] rounded border-gray-300"><span class="text-sm font-bold text-[#0c4a6e] group-hover:text-[#ff5fab] transition">沒問題，我同意以上事項👌🏻 <span class="required-star">*</span></span></label>
                 </div>
             </div>
-
         </form>
     </div>
 
-    <!-- 底部版權 -->
-    <footer class="text-center text-[#94a3b8] text-xs pb-32 font-medium">
-        &copy; 2025 雪豹豹豹. All rights reserved.
-    </footer>
+    <footer class="text-center text-[#94a3b8] text-xs pb-32 font-medium">&copy; 2025 雪豹豹豹. All rights reserved.</footer>
 
-    <!-- 浮動價格條 -->
     <div id="price-bar" class="bottom-bar hidden">
-        <div class="flex flex-col">
-            <span class="text-[10px] text-gray-300 tracking-wider uppercase font-bold">Estimated Total</span>
-            <span class="text-2xl font-bold text-[#ff5fab]" id="display_total">$60</span>
-        </div>
-        <button onclick="submitFormToGoogle()" class="bg-[#ff5fab] text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-[#ff5fab] transition shadow-[0_0_15px_rgba(255,95,171,0.4)] transform hover:scale-105 active:scale-95 select-none">
-            送出委託
-        </button>
+        <div class="flex flex-col"><span class="text-[10px] text-gray-300 tracking-wider uppercase font-bold">Estimated Total</span><span class="text-2xl font-bold text-[#ff5fab]" id="display_total">$60</span></div>
+        <button onclick="submitFormToGoogle()" class="bg-[#ff5fab] text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-[#ff5fab] active:bg-[#ff5fab] active:text-white transition shadow-[0_0_15px_rgba(255,95,171,0.4)] transform hover:scale-105 active:scale-95 select-none">送出委託</button>
     </div>
 
     <script>
@@ -727,40 +222,19 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLZOs5AYZT2lg0z3EQSAFRLOUAnhCce4II9gohz41wxaN7J-wbNPvDNEkz0rgtLbCTcw/exec";
         const pinkHeartSvg = `<i data-lucide="heart" class="w-10 h-10 fill-[#ff5fab] text-[#ff5fab] inline-block"></i>`;
 
-        // ★★★ 設定相簿圖片 ★★★
+        // 請替換這裡的圖片網址
         const portfolioImages = {
-            blessing: {
-                title: "祝福似顏繪相簿",
-                images: [
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+1",
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+2",
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+3",
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+4"
-                ]
-            },
-            portrait: {
-                title: "人像似顏繪相簿",
-                images: ["p1.png", "p2.png", "p3.png", "p4.png"]
-            },
-            pet: {
-                title: "寵物似顏繪相簿",
-                images: [
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+1",
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+2",
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+3",
-                    "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+4"
-                ]
-            }
+            blessing: { title: "祝福似顏繪相簿", images: ["https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+1", "https://placehold.co/800x800/f0f9ff/ff5fab?text=Blessing+2"] },
+            portrait: { title: "人像似顏繪相簿", images: ["p1.png", "p2.png"] },
+            pet: { title: "寵物似顏繪相簿", images: ["https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+1", "https://placehold.co/800x800/f0f9ff/ff5fab?text=Pet+2"] }
         };
 
         function openGallery(type) {
             const data = portfolioImages[type];
             if (!data) return;
-
             document.getElementById('gallery-title').innerText = data.title;
             const grid = document.getElementById('gallery-grid');
             grid.innerHTML = ''; 
-
             data.images.forEach(src => {
                 const img = document.createElement('img');
                 img.src = src;
@@ -771,12 +245,9 @@
             document.getElementById('gallery-modal').classList.add('open');
         }
 
-        // --- 21組貼紙模擬資料 ---
         const stickersData = [];
         const blessings = [
-            { icon: "💰", text: "財源滾滾" }, 
-            { icon: pinkHeartSvg, text: "愛情順利" }, 
-            { icon: "🌸", text: "心花怒放" },
+            { icon: "💰", text: "財源滾滾" }, { icon: pinkHeartSvg, text: "愛情順利" }, { icon: "🌸", text: "心花怒放" },
             { icon: "✨", text: "閃閃發光" }, { icon: "🍀", text: "幸運相隨" }, { icon: "💪", text: "身體健康" },
             { icon: "🌈", text: "未來可期" }, { icon: "🍎", text: "平平安安" }, { icon: "🎉", text: "天天開心" },
             { icon: "☀️", text: "充滿希望" }, { icon: "🐱", text: "貓肥家潤" }, { icon: "🐶", text: "忠誠陪伴" }
@@ -784,29 +255,17 @@
 
         for(let i=1; i<=21; i++) {
             let elements = [];
-            for(let j=0; j<3; j++) {
-                elements.push(blessings[Math.floor(Math.random() * blessings.length)]);
-            }
-            stickersData.push({
-                id: i,
-                imageUrl: `https://placehold.co/200x200/fff0f7/ff5fab?text=Sticker+${i}`,
-                name: `貼紙 ${i}號`,
-                elements: elements
-            });
+            for(let j=0; j<3; j++) { elements.push(blessings[Math.floor(Math.random() * blessings.length)]); }
+            stickersData.push({ id: i, imageUrl: `https://placehold.co/200x200/fff0f7/ff5fab?text=Sticker+${i}`, name: `貼紙 ${i}號`, elements: elements });
         }
 
         const orderStates = {};
 
         document.addEventListener('DOMContentLoaded', () => { 
             addOrder(); 
-            switchPage('works');
-            
-            document.getElementById('gallery-modal').addEventListener('click', function(e) {
-                if(e.target === this) closeGallery();
-            });
+            switchPage('works'); 
+            document.getElementById('gallery-modal').addEventListener('click', function(e) { if(e.target === this) closeGallery(); });
         });
-
-        // --- 核心邏輯修改：將所有功能綁定到特定 orderId ---
 
         function toggleStickerSection(show, orderId) {
             const area = document.getElementById(`sticker-interactive-area-${orderId}`);
@@ -816,10 +275,7 @@
                 setTimeout(() => area.scrollIntoView({behavior: "smooth", block: "start"}), 100);
             } else {
                 area.classList.add('hidden');
-                if (orderStates[orderId]) {
-                    orderStates[orderId].selectedSticker = null;
-                    orderStates[orderId].flippedCount = 0;
-                }
+                if (orderStates[orderId]) { orderStates[orderId].selectedSticker = null; orderStates[orderId].flippedCount = 0; }
                 document.getElementById(`reveal-section-${orderId}`).classList.add('hidden');
                 document.getElementById(`blessing-text-container-${orderId}`).classList.add('opacity-0');
             }
@@ -828,15 +284,12 @@
         function renderStickers(orderId) {
             const grid = document.getElementById(`sticker-grid-${orderId}`);
             if(grid.children.length > 0) return;
-
             grid.innerHTML = '';
             stickersData.forEach(sticker => {
                 const div = document.createElement('div');
                 div.className = 'sticker-grid-item';
                 div.id = `sticker-item-${orderId}-${sticker.id}`;
-                div.innerHTML = `
-                    <img src="${sticker.imageUrl}" alt="貼紙選項" class="w-full h-auto object-cover aspect-square pointer-events-none">
-                `;
+                div.innerHTML = `<img src="${sticker.imageUrl}" alt="貼紙選項" class="w-full h-auto object-cover aspect-square pointer-events-none">`;
                 div.onclick = () => selectSticker(sticker.id, orderId);
                 grid.appendChild(div);
             });
@@ -845,45 +298,23 @@
         function selectSticker(stickerId, orderId) {
             const state = orderStates[orderId];
             if (state.selectedSticker && state.selectedSticker.id === stickerId) return;
-            if (state.flippedCount > 0) {
-                 alert("選定後不可更換喔！請直接翻開愛心接收祝福 ❤");
-                 return;
-            }
-
-            const grid = document.getElementById(`sticker-grid-${orderId}`);
-            grid.querySelectorAll('.sticker-grid-item').forEach(el => el.classList.remove('selected'));
+            if (state.flippedCount > 0) { alert("選定後不可更換喔！請直接翻開愛心接收祝福 ❤"); return; }
+            document.getElementById(`sticker-grid-${orderId}`).querySelectorAll('.sticker-grid-item').forEach(el => el.classList.remove('selected'));
             document.getElementById(`sticker-item-${orderId}-${stickerId}`).classList.add('selected');
-
             state.selectedSticker = stickersData.find(s => s.id === stickerId);
-            
             const revealSec = document.getElementById(`reveal-section-${orderId}`);
             revealSec.classList.remove('hidden');
             revealSec.scrollIntoView({behavior: "smooth", block: "center"});
-            
             const container = document.getElementById(`cards-container-${orderId}`);
             container.innerHTML = '';
             state.flippedCount = 0;
             document.getElementById(`blessing-text-container-${orderId}`).classList.add('opacity-0');
             document.getElementById(`blessing-title-wrapper-${orderId}`).classList.add('opacity-0');
-
             for(let i=0; i<3; i++) {
                 const el = state.selectedSticker.elements[i];
                 const cardIndex = i + 1;
-                
-                // ★★★ 卡片結構修改：使用 justify-end 和 pb-3 對齊底部 ★★★
-                const cardHTML = `
-                    <div class="flip-card" id="flip-card-${orderId}-${cardIndex}" onclick="flipCard(event, ${cardIndex}, ${orderId})">
-                        <div class="flip-card-inner" id="card-inner-${orderId}-${cardIndex}">
-                            <div class="flip-card-front">
-                                <i data-lucide="heart" class="w-7 h-7 md:w-10 md:h-10 fill-current text-[#ff5fab]"></i>
-                            </div>
-                            <div class="flip-card-back flex flex-col items-center justify-end pb-3 gap-0">
-                                <span class="text-3xl md:text-5xl drop-shadow-sm flex items-center justify-center h-10 md:h-14">${el.icon}</span>
-                                <span class="text-[10px] md:text-sm font-bold text-[#0c4a6e] tracking-wide leading-none mt-1">${el.text}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                // ★★★ 卡片結構修改：使用 flex-col 和 justify-center, gap-2 讓愛心和文字對齊，調整愛心大小為 w-8 h-8 ★★★
+                const cardHTML = `<div class="flip-card" id="flip-card-${orderId}-${cardIndex}" onclick="flipCard(event, ${cardIndex}, ${orderId})"><div class="flip-card-inner" id="card-inner-${orderId}-${cardIndex}"><div class="flip-card-front"><i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 fill-current text-[#ff5fab]"></i></div><div class="flip-card-back flex flex-col items-center justify-center gap-2"><span class="text-2xl md:text-5xl drop-shadow-sm flex items-center justify-center h-10 md:h-14">${el.icon}</span><span class="text-[10px] md:text-sm font-bold text-[#0c4a6e] tracking-wide leading-none">${el.text}</span></div></div></div>`;
                 container.innerHTML += cardHTML;
             }
             lucide.createIcons();
@@ -893,27 +324,20 @@
             const inner = document.getElementById(`card-inner-${orderId}-${cardIndex}`);
             const cardEl = document.getElementById(`flip-card-${orderId}-${cardIndex}`);
             const state = orderStates[orderId];
-            
             if(inner.parentElement.classList.contains('flipped')) return;
-
             inner.parentElement.classList.add('flipped');
             state.flippedCount++;
-
             setTimeout(() => {
                 cardEl.classList.remove('flip-card-landed');
                 void cardEl.offsetWidth; 
                 cardEl.classList.add('flip-card-landed');
                 createConfetti(cardEl);
-
                 if (state.flippedCount === 3) {
                     setTimeout(() => {
                         const words = state.selectedSticker.elements.map(e => e.text).join('、');
-                        const textContainer = document.getElementById(`blessing-text-container-${orderId}`);
-                        const titleWrapper = document.getElementById(`blessing-title-wrapper-${orderId}`);
-                        
                         document.getElementById(`blessing-words-${orderId}`).innerText = `${words}`;
-                        textContainer.classList.remove('opacity-0');
-                        titleWrapper.classList.remove('opacity-0');
+                        document.getElementById(`blessing-text-container-${orderId}`).classList.remove('opacity-0');
+                        document.getElementById(`blessing-title-wrapper-${orderId}`).classList.remove('opacity-0');
                         lucide.createIcons();
                     }, 600);
                 }
@@ -922,37 +346,20 @@
 
         function createConfetti(element) {
             const rect = element.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
             const colors = ['#ff5fab', '#bae6fd', '#fbcfe8', '#38bdf8', '#fbbf24'];
-            const particleCount = 30;
-
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('confetti-particle');
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.left = `${centerX}px`;
-                particle.style.top = `${centerY}px`;
+                particle.style.left = `${rect.left + rect.width / 2}px`;
+                particle.style.top = `${rect.top + rect.height / 2}px`;
                 document.body.appendChild(particle);
-
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = 30 + Math.random() * 80;
-                const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity;
-
-                const animation = particle.animate([
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
-                ], {
-                    duration: 600 + Math.random() * 400,
-                    easing: 'cubic-bezier(0, .9, .57, 1)',
-                    fill: 'forwards'
-                });
-                animation.onfinish = () => particle.remove();
+                particle.animate([{ transform: 'translate(0, 0) scale(1)', opacity: 1 }, { transform: `translate(${Math.cos(angle) * velocity}px, ${Math.sin(angle) * velocity}px) scale(0)`, opacity: 0 }], { duration: 600 + Math.random() * 400, easing: 'cubic-bezier(0, .9, .57, 1)', fill: 'forwards' }).onfinish = () => particle.remove();
             }
         }
 
-        // --- 頁面邏輯 ---
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
         function closeGallery() { document.getElementById('gallery-modal').classList.remove('open'); }
         function switchPage(pageId) {
@@ -964,169 +371,53 @@
             document.getElementById('nav-mobile-works').classList.remove('text-[#ff5fab]', 'font-bold');
             document.getElementById('nav-mobile-commission').classList.remove('text-[#ff5fab]', 'font-bold');
             document.getElementById('page-' + pageId).classList.add('active');
-
-            if(pageId === 'works') {
-                document.getElementById('nav-desktop-works').classList.add('active');
-                document.getElementById('nav-mobile-works').classList.add('text-[#ff5fab]', 'font-bold');
-            } else {
-                document.getElementById('nav-desktop-commission').classList.add('active');
-                document.getElementById('nav-mobile-commission').classList.add('text-[#ff5fab]', 'font-bold');
-                document.getElementById('price-bar').classList.remove('hidden');
-                document.getElementById('price-bar').classList.add('show');
-            }
+            if(pageId === 'works') { document.getElementById('nav-desktop-works').classList.add('active'); document.getElementById('nav-mobile-works').classList.add('text-[#ff5fab]', 'font-bold'); }
+            else { document.getElementById('nav-desktop-commission').classList.add('active'); document.getElementById('nav-mobile-commission').classList.add('text-[#ff5fab]', 'font-bold'); document.getElementById('price-bar').classList.remove('hidden'); document.getElementById('price-bar').classList.add('show'); }
             window.scrollTo(0, 0);
         }
 
         function addOrder() {
             orderCount++;
             orderStates[orderCount] = { selectedSticker: null, flippedCount: 0 };
-
             const container = document.getElementById('orders-container');
             const div = document.createElement('div');
             div.className = 'order-card order-card-active'; 
             div.id = `order-${orderCount}`;
-            
-            div.innerHTML = `
-                <div class="flex justify-between items-center mb-4 pb-2 border-b border-dashed border-[#ff5fab]">
-                    <span class="font-bold text-[#0c4a6e] text-lg">委託圖 #${orderCount}</span>
-                    ${orderCount > 1 ? `<button type="button" class="text-[#94a3b8] hover:text-red-500 text-sm flex items-center gap-1 transition select-none" onclick="removeOrder(${orderCount})"><i data-lucide="trash-2" class="w-4 h-4 text-[#ff5fab]"></i> 移除</button>` : ''}
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div class="bg-[#f0f9ff] p-4 rounded-lg border border-[#e0f2fe] flex flex-col items-center">
-                        <span class="text-xs font-bold text-[#0284c7] mb-2">人物 ($500)</span>
-                        <div class="flex items-center gap-4">
-                            <div class="qty-btn" onclick="updateQty('people', ${orderCount}, -1)">-</div>
-                            <input type="text" id="qty-people-${orderCount}" value="0" class="w-10 text-center bg-transparent font-bold text-lg text-[#0c4a6e]" readonly>
-                            <div class="qty-btn" onclick="updateQty('people', ${orderCount}, 1)">+</div>
-                        </div>
-                    </div>
-                    <div class="bg-[#f0f9ff] p-4 rounded-lg border border-[#e0f2fe] flex flex-col items-center">
-                        <span class="text-xs font-bold text-[#0284c7] mb-2">寵物 ($450)</span>
-                        <div class="flex items-center gap-4">
-                            <div class="qty-btn" onclick="updateQty('pet', ${orderCount}, -1)">-</div>
-                            <input type="text" id="qty-pet-${orderCount}" value="0" class="w-10 text-center bg-transparent font-bold text-lg text-[#0c4a6e]" readonly>
-                            <div class="qty-btn" onclick="updateQty('pet', ${orderCount}, 1)">+</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-3 mb-6">
-                    <div class="relative">
-                        <input type="file" id="file-${orderCount}" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="updateFileName(this, ${orderCount})">
-                        <div class="w-full py-4 border-2 border-dashed border-[#cbd5e1] rounded-xl text-[#64748b] text-sm text-center hover:border-[#ff5fab] hover:text-[#ff5fab] hover:bg-[#f0f9ff] transition flex flex-col items-center justify-center gap-1" id="upload-label-${orderCount}">
-                            <i data-lucide="image-plus" class="w-6 h-6 mb-1 text-[#ff5fab]"></i> 
-                            <span class="font-medium">點擊上傳參考照片</span>
-                            <span class="text-xs text-[#94a3b8] font-normal">支援多張上傳 (4K不壓縮)</span>
-                        </div>
-                    </div>
-                    <input type="text" id="combo-${orderCount}" class="site-input text-sm" placeholder="組合備註：例如 1人抱著1貓">
-                </div>
-
-                <div class="pt-4 border-t border-[#e2e8f0]">
-                    <label class="block font-bold text-[#0c4a6e] mb-3 flex items-center gap-2">
-                        <i data-lucide="sparkles" class="w-4 h-4 text-[#ff5fab]"></i> 是否需要貼紙與祝福？
-                    </label>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <label class="radio-box">
-                            <!-- ★★★ 修改：不預選任何項目 ★★★ -->
-                            <input type="radio" name="sticker-${orderCount}" value="不用貼紙" class="hidden" onchange="toggleStickerSection(false, ${orderCount})">
-                            <div class="radio-inner">不用貼紙</div>
-                        </label>
-                        <label class="radio-box">
-                            <input type="radio" name="sticker-${orderCount}" value="好呀" class="hidden" onchange="toggleStickerSection(true, ${orderCount})">
-                            <div class="radio-inner">好呀~</div>
-                        </label>
-                    </div>
-
-                    <div id="sticker-interactive-area-${orderCount}" class="hidden mt-4 border-t-2 border-dashed border-[#e2e8f0] pt-4">
-                        <h4 class="font-bold text-[#0c4a6e] mb-2 flex items-center gap-2 text-sm">
-                            <i data-lucide="smile" class="w-4 h-4 text-[#ff5fab]"></i> 請直覺選一張最喜歡的圖
-                        </h4>
-                        
-                        <div id="sticker-grid-${orderCount}" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-6"></div>
-
-                        <div id="reveal-section-${orderCount}" class="hidden bg-[#fff0f7] p-4 rounded-xl text-center transition-all duration-500 mt-4">
-                            <p class="text-[#0c4a6e] font-bold mb-4 text-sm md:text-base">請點擊下方的愛心，接收您的祝福 ✨</p>
-                            <div id="cards-container-${orderCount}" class="flex justify-center gap-3 md:gap-8 mb-4 relative"></div>
-                            
-                            <div class="flex items-center justify-center gap-2 mb-2 mt-4 opacity-0 transition-opacity duration-500" id="blessing-title-wrapper-${orderCount}">
-                                <i data-lucide="heart" class="w-5 h-5 fill-[#ff5fab] text-[#ff5fab]"></i>
-                                <p class="text-[#ff5fab] font-bold text-lg">您的專屬祝福</p>
-                                <i data-lucide="heart" class="w-5 h-5 fill-[#ff5fab] text-[#ff5fab]"></i>
-                            </div>
-                            <div id="blessing-text-container-${orderCount}" class="opacity-0 transition-opacity duration-1000 px-2 overflow-hidden">
-                                <p id="blessing-words-${orderCount}" class="text-[#0c4a6e] font-bold text-base md:text-xl whitespace-nowrap overflow-visible"></p>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border-2 border-[#e2e8f0] w-full overflow-hidden">
-                            <div class="min-w-0">
-                                <label class="block text-sm font-bold text-[#0c4a6e] mb-2">被畫對象姓名 <span class="required-star">*</span></label>
-                                <input type="text" id="subject_name-${orderCount}" class="site-input" placeholder="例如：王小明">
-                            </div>
-                            <div class="min-w-0">
-                                <label class="block text-sm font-bold text-[#0c4a6e] mb-2" id="subject_birthday_label-${orderCount}">被畫對象生日 <span class="text-xs text-gray-400 font-normal">(不知生日可不填)</span></label>
-                                <input type="date" id="subject_birthday-${orderCount}" class="site-input cursor-pointer">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+            div.innerHTML = `<div class="flex justify-between items-center mb-4 pb-2 border-b border-dashed border-[#ff5fab]"><span class="font-bold text-[#0c4a6e] text-lg">委託圖 #${orderCount}</span>${orderCount > 1 ? `<button type="button" class="text-[#94a3b8] hover:text-red-500 text-sm flex items-center gap-1 transition select-none" onclick="removeOrder(${orderCount})"><i data-lucide="trash-2" class="w-4 h-4 text-[#ff5fab]"></i> 移除</button>` : ''}</div><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div class="bg-[#f0f9ff] p-4 rounded-lg border border-[#e0f2fe] flex flex-col items-center"><span class="text-xs font-bold text-[#0284c7] mb-2">人物 ($500)</span><div class="flex items-center gap-4"><div class="qty-btn" onclick="updateQty('people', ${orderCount}, -1)">-</div><input type="text" id="qty-people-${orderCount}" value="0" class="w-10 text-center bg-transparent font-bold text-lg text-[#0c4a6e]" readonly><div class="qty-btn" onclick="updateQty('people', ${orderCount}, 1)">+</div></div></div><div class="bg-[#f0f9ff] p-4 rounded-lg border border-[#e0f2fe] flex flex-col items-center"><span class="text-xs font-bold text-[#0284c7] mb-2">寵物 ($450)</span><div class="flex items-center gap-4"><div class="qty-btn" onclick="updateQty('pet', ${orderCount}, -1)">-</div><input type="text" id="qty-pet-${orderCount}" value="0" class="w-10 text-center bg-transparent font-bold text-lg text-[#0c4a6e]" readonly><div class="qty-btn" onclick="updateQty('pet', ${orderCount}, 1)">+</div></div></div></div><div class="space-y-3 mb-6"><div class="relative"><input type="file" id="file-${orderCount}" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="updateFileName(this, ${orderCount})"><div class="w-full py-4 border-2 border-dashed border-[#cbd5e1] rounded-xl text-[#64748b] text-sm text-center hover:border-[#ff5fab] hover:text-[#ff5fab] hover:bg-[#f0f9ff] transition flex flex-col items-center justify-center gap-1" id="upload-label-${orderCount}"><i data-lucide="image-plus" class="w-6 h-6 mb-1 text-[#ff5fab]"></i> <span class="font-medium">點擊上傳參考照片</span><span class="text-xs text-[#94a3b8] font-normal">支援多張上傳 (4K不壓縮)</span></div></div><input type="text" id="combo-${orderCount}" class="site-input text-sm" placeholder="組合備註：例如 1人抱著1貓"></div><div class="pt-4 border-t border-[#e2e8f0]"><label class="block font-bold text-[#0c4a6e] mb-3 flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-[#ff5fab]"></i> 是否需要貼紙與祝福？</label><div class="grid grid-cols-2 gap-4 mb-4"><label class="radio-box"><input type="radio" name="sticker-${orderCount}" value="不用貼紙" class="hidden" onchange="toggleStickerSection(false, ${orderCount})"><div class="radio-inner">不用貼紙</div></label><label class="radio-box"><input type="radio" name="sticker-${orderCount}" value="好呀" class="hidden" onchange="toggleStickerSection(true, ${orderCount})"><div class="radio-inner">好呀~</div></label></div><div id="sticker-interactive-area-${orderCount}" class="hidden mt-4 border-t-2 border-dashed border-[#e2e8f0] pt-4"><h4 class="font-bold text-[#0c4a6e] mb-2 flex items-center gap-2 text-sm"><i data-lucide="smile" class="w-4 h-4 text-[#ff5fab]"></i> 請直覺選一張最喜歡的圖</h4><div id="sticker-grid-${orderCount}" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-6"></div><div id="reveal-section-${orderCount}" class="hidden bg-[#fff0f7] p-4 rounded-xl text-center transition-all duration-500 mt-4"><p class="text-[#0c4a6e] font-bold mb-4 text-sm md:text-base">請點擊下方的愛心，接收您的祝福 ✨</p><div id="cards-container-${orderCount}" class="flex justify-center gap-3 md:gap-8 mb-4 relative"></div><div class="flex items-center justify-center gap-2 mb-2 mt-4 opacity-0 transition-opacity duration-500" id="blessing-title-wrapper-${orderCount}"><i data-lucide="heart" class="w-5 h-5 fill-[#ff5fab] text-[#ff5fab]"></i><p class="text-[#ff5fab] font-bold text-lg">您的專屬祝福</p><i data-lucide="heart" class="w-5 h-5 fill-[#ff5fab] text-[#ff5fab]"></i></div><div id="blessing-text-container-${orderCount}" class="opacity-0 transition-opacity duration-1000 px-2 overflow-hidden"><p id="blessing-words-${orderCount}" class="text-[#0c4a6e] font-bold text-base md:text-xl whitespace-nowrap overflow-visible"></p></div></div><div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border-2 border-[#e2e8f0] w-full overflow-hidden"><div class="min-w-0"><label class="block text-sm font-bold text-[#0c4a6e] mb-2">被畫對象姓名 <span class="required-star">*</span></label><input type="text" id="subject_name-${orderCount}" class="site-input" placeholder="例如：王小明"></div><div class="min-w-0"><label class="block text-sm font-bold text-[#0c4a6e] mb-2" id="subject_birthday_label-${orderCount}">被畫對象生日 <span class="text-xs text-gray-400 font-normal">(不知生日可不填)</span></label><input type="date" id="subject_birthday-${orderCount}" class="site-input cursor-pointer"></div></div></div></div>`;
             container.appendChild(div);
             lucide.createIcons();
             calculateTotal();
-            updateBirthdayRequirement(orderCount); // 初始化生日檢查
+            updateBirthdayRequirement(orderCount);
         }
 
-        function removeOrder(id) {
-            const el = document.getElementById(`order-${id}`);
-            if (el) { el.remove(); calculateTotal(); delete orderStates[id]; }
-        }
-
+        function removeOrder(id) { const el = document.getElementById(`order-${id}`); if (el) { el.remove(); calculateTotal(); delete orderStates[id]; } }
         function updateQty(type, id, change) {
             const input = document.getElementById(`qty-${type}-${id}`);
             let val = parseInt(input.value) || 0;
-            val += change;
-            if (val < 0) val = 0;
+            val += change; if (val < 0) val = 0;
             input.value = val;
             calculateTotal();
             updateBirthdayRequirement(id);
         }
-
         function updateBirthdayRequirement(id) {
             const peopleQty = parseInt(document.getElementById(`qty-people-${id}`).value) || 0;
             const label = document.getElementById(`subject_birthday_label-${id}`);
             if (!label) return;
-
-            if (peopleQty > 0) {
-                // 有人物：必填，紅色星號
-                label.innerHTML = `被畫對象生日 <span class="required-star">*</span>`;
-            } else {
-                // 只有寵物 (或都是0)：不必填，灰色提示
-                label.innerHTML = `被畫對象生日 <span class="text-xs text-gray-400 font-normal">(不知生日可不填)</span>`;
-            }
+            if (peopleQty > 0) { label.innerHTML = `被畫對象生日 <span class="required-star">*</span>`; }
+            else { label.innerHTML = `被畫對象生日 <span class="text-xs text-gray-400 font-normal">(不知生日可不填)</span>`; }
         }
-
         function updateFileName(input, id) {
             const label = document.getElementById(`upload-label-${id}`);
             if (input.files && input.files.length > 0) {
                 label.innerHTML = `<i data-lucide="check-circle" class="w-6 h-6 mb-1 text-[#ff5fab]"></i><span class="font-bold text-[#ff5fab]">已選擇 ${input.files.length} 張照片</span>`;
                 label.classList.add('border-[#ff5fab]', 'text-[#ff5fab]', 'bg-[#fff0f7]');
-                label.classList.remove('border-[#cbd5e1]', 'text-[#64748b]');
             } else {
-                label.innerHTML = `
-                    <i data-lucide="image-plus" class="w-6 h-6 mb-1 text-[#ff5fab]"></i> 
-                    <span class="font-medium">點擊上傳參考照片</span>
-                    <span class="text-xs text-[#94a3b8] font-normal">支援多張上傳 (4K不壓縮)</span>
-                `;
+                label.innerHTML = `<i data-lucide="image-plus" class="w-6 h-6 mb-1 text-[#ff5fab]"></i><span class="font-medium">點擊上傳參考照片</span><span class="text-xs text-[#94a3b8] font-normal">支援多張上傳 (4K不壓縮)</span>`;
                 label.classList.remove('border-[#ff5fab]', 'text-[#ff5fab]', 'bg-[#fff0f7]');
-                label.classList.add('border-[#cbd5e1]', 'text-[#64748b]');
             }
         }
-
         function calculateTotal() {
-            let total = 60; 
+            let total = 60;
             const cards = document.querySelectorAll('.order-card');
             cards.forEach(card => {
                 const people = parseInt(card.querySelector('input[id^="qty-people"]').value) || 0;
@@ -1141,30 +432,25 @@
             const address = document.getElementById('shipping_address').value.trim();
             const store = document.getElementById('shipping_store').value.trim();
             const errorMsg = document.getElementById('shipping-error');
-
-            let hasContent = false;
             let isValid = true;
+            let hasContent = false;
 
             const cards = document.querySelectorAll('.order-card');
             for(let i=0; i<cards.length; i++) {
                 const card = cards[i];
-                const orderId = card.id.split('-')[1]; 
-                
+                const orderId = card.id.split('-')[1];
                 const p = parseInt(document.getElementById(`qty-people-${orderId}`).value) || 0;
                 const a = parseInt(document.getElementById(`qty-pet-${orderId}`).value) || 0;
-                
+
                 if (p === 0 && a === 0) {
                     alert(`【委託圖 #${orderId}】請設定人數或寵物數量！`);
                     card.scrollIntoView({behavior: "smooth", block: "center"});
-                    card.style.borderColor = "#ef4444";
-                    setTimeout(() => card.style.borderColor = "#ff5fab", 2000);
+                    card.style.borderColor = "#ef4444"; setTimeout(() => card.style.borderColor = "#ff5fab", 2000);
                     isValid = false; break;
                 }
-                
                 hasContent = true;
 
                 const stickerChoice = document.querySelector(`input[name="sticker-${orderId}"]:checked`);
-                // ★★★ 驗證：必須選擇要或不要貼紙 ★★★
                 if (!stickerChoice) {
                     alert(`【委託圖 #${orderId}】請選擇是否需要貼紙！`);
                     card.querySelector('.radio-box').scrollIntoView({behavior: "smooth", block: "center"});
@@ -1180,39 +466,22 @@
                     const subjName = document.getElementById(`subject_name-${orderId}`);
                     if (!subjName.value) {
                         alert(`【委託圖 #${orderId}】請填寫被畫對象姓名！`);
-                        subjName.classList.add('input-error');
-                        setTimeout(() => subjName.classList.remove('input-error'), 500);
-                        subjName.focus();
+                        subjName.classList.add('input-error'); setTimeout(() => subjName.classList.remove('input-error'), 500); subjName.focus();
                         isValid = false; break;
                     }
                     const subjBirthday = document.getElementById(`subject_birthday-${orderId}`);
                     if (p > 0 && !subjBirthday.value) {
                         alert(`【委託圖 #${orderId}】畫人物時，請填寫生日喔！`);
-                        subjBirthday.classList.add('input-error');
-                        setTimeout(() => subjBirthday.classList.remove('input-error'), 500);
-                        subjBirthday.focus();
+                        subjBirthday.classList.add('input-error'); setTimeout(() => subjBirthday.classList.remove('input-error'), 500); subjBirthday.focus();
                         isValid = false; break;
                     }
                 }
             }
-
             if (!isValid) return false;
-
-            if (!address && !store) {
-                errorMsg.classList.remove('hidden');
-                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return false;
-            }
-            if (!document.getElementById('name').value || !document.getElementById('phone').value || !document.getElementById('ig_account').value || !document.getElementById('bank_last_5').value) {
-                alert("請填寫所有必填欄位！");
-                return false;
-            }
-            if(!document.getElementById('notify_check').checked || !document.getElementById('terms_check').checked) {
-                alert("請勾選確認事項！");
-                return false;
-            }
-            
-            errorMsg.classList.add('hidden');
+            if (!hasContent) { alert("請至少設定一張圖的人數或寵物數量！"); return false; }
+            if (!address && !store) { errorMsg.classList.remove('hidden'); errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
+            if (!document.getElementById('name').value || !document.getElementById('phone').value || !document.getElementById('ig_account').value || !document.getElementById('bank_last_5').value) { alert("請填寫所有必填欄位！"); return false; }
+            if(!document.getElementById('notify_check').checked || !document.getElementById('terms_check').checked) { alert("請勾選確認事項！"); return false; }
             return true;
         }
 
@@ -1230,23 +499,9 @@
             loading.style.display = 'flex';
 
             try {
-                // 檢查總檔案大小 (約 25MB)
                 let totalSize = 0;
-                const allFileInputs = document.querySelectorAll('input[type="file"]');
-                allFileInputs.forEach(input => {
-                    if (input.files) {
-                        for (let i = 0; i < input.files.length; i++) {
-                            totalSize += input.files[i].size;
-                        }
-                    }
-                });
-
-                if (totalSize > 25 * 1024 * 1024) {
-                    if(!confirm("⚠️ 您的照片檔案總和較大 (>25MB)，可能會導致傳送失敗。\n\n建議您「分批下單」或將照片上傳至雲端後提供連結。\n\n要嘗試繼續傳送嗎？")) {
-                        loading.classList.add('hidden');
-                        return;
-                    }
-                }
+                document.querySelectorAll('input[type="file"]').forEach(input => { if (input.files) { for (let i = 0; i < input.files.length; i++) { totalSize += input.files[i].size; } } });
+                if (totalSize > 25 * 1024 * 1024) { if(!confirm("⚠️ 您的照片檔案總和較大 (>25MB)，可能會導致傳送失敗。\n\n建議您「分批下單」或將照片上傳至雲端後提供連結。\n\n要嘗試繼續傳送嗎？")) { loading.classList.add('hidden'); return; } }
 
                 let orderDetails = [];
                 let allFiles = [];
@@ -1265,13 +520,11 @@
                     
                     if (p > 0 || a > 0) {
                         orderDetails.push(`【委託圖 ${orderId}】: 人${p}/寵${a} (${combo || "無備註"})`);
-                        
                         const stickerChoice = document.querySelector(`input[name="sticker-${orderId}"]:checked`).value;
                         if (stickerChoice === "好呀" && orderStates[orderId].selectedSticker) {
                             const s = orderStates[orderId].selectedSticker;
                             const bless = s.elements.map(e => e.text).join('/');
                             combinedStickerInfo.push(`【圖${orderId}】${s.name}: ${bless}`);
-                            
                             const sName = document.getElementById(`subject_name-${orderId}`).value;
                             const sBirth = document.getElementById(`subject_birthday-${orderId}`).value;
                             combinedSubjectNames.push(`【圖${orderId}】${sName}`);
@@ -1281,21 +534,15 @@
                             combinedSubjectNames.push(`【圖${orderId}】無`);
                             combinedSubjectBirthdays.push(`【圖${orderId}】無`);
                         }
-
                         if (fileInput.files.length > 0) {
                             for (let j = 0; j < fileInput.files.length; j++) {
                                 const file = fileInput.files[j];
                                 const base64 = await fileToBase64(file);
-                                allFiles.push({
-                                    name: `Order${orderId}_${file.name}`,
-                                    type: file.type,
-                                    base64: base64
-                                });
+                                allFiles.push({ name: `Order${orderId}_${file.name}`, type: file.type, base64: base64 });
                             }
                         }
                     }
                 }
-
                 const payload = {
                     name: document.getElementById('name').value,
                     ig_account: document.getElementById('ig_account').value,
@@ -1309,17 +556,10 @@
                     order_details: orderDetails.join("\n"),
                     files: allFiles
                 };
-
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    mode: 'no-cors'
-                });
-
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
                 loading.classList.add('hidden');
                 alert('委託單已送出！我們會盡快與您聯繫 ❤');
                 window.location.reload();
-
             } catch (error) {
                 loading.classList.add('hidden');
                 console.error(error);
